@@ -1,0 +1,68 @@
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="card shadow rounded-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Contactless Check-In</h5>
+                <a href="https://rsmguest.com/admin/hotel_images/qr_document" target="_blank"
+                    title="Contactless CheckIn QR">
+                    <img src="https://rsmguest.com/assets/images/015-qr-scan.png" alt="QR"
+                        style="width:35px; height:35px;" />
+                </a>
+            </div>
+
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-sm table_font" datatable
+                        [dtOptions]="checkin_datatable">
+                        <thead>
+                            <tr>
+                                <th scope="col">S.No</th>
+                                <th scope="col">ResID</th>
+                                <th scope="col">BookingID</th>
+                                <th scope="col">Check-In</th>
+                                <th scope="col">Check-Out</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">No.of Rooms</th>
+                                 <th scope="col">Type</th>
+                                <th scope="col">Payment Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let room of room_table_list; let i = index">
+                                <td>{{ i + 1 }}</td>
+                                <td>{{ room.res_id }}</td>
+                                <td>{{ room.booking_id }}</td>
+                                <td>{{ formatDateString(room.check_in_date) }}</td>
+                                <td>{{ formatDateString(room.check_out_date) }}</td>
+                               
+                                <td>{{ room.guest_name || '—' }}</td>
+                                <td>{{ room.number_of_nights }}</td>
+                                <!-- View Documents Button -->
+                                <td>
+                                    <a *ngIf="room.guest_id_upload || room.guest_image_upload" href="#"
+                                        class="btn btn-outline-info btn-sm">
+                                        View
+                                    </a>
+                                </td>
+
+                                <!-- Check-In Button (Only if room is vacant) -->
+                                <td>
+                                    <button class="btn btn-success btn-sm" [disabled]="room.room_status !== 'vacant'" (click)="gotocheckin(room)">
+                                        Check-In
+                                    </button>
+                                </td>
+
+                                <!-- Delete Button -->
+                                <td>
+                                    <button class="btn btn-danger btn-sm" (click)="deleteRoom(room)">Delete</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,688 @@
+<div class="content-body">
+  <div class="container-fluid">
+
+    <div class="row mb-3">
+      <div class="col-md-12">
+        <div class="row">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <!-- Left corner text -->
+            <div class="row align-items-center mb-3 g-2">
+
+              <!-- Button Group -->
+              <div class="col-md-auto">
+                <div class="btn-group btn-group-sm flex-wrap" role="group" aria-label="Room Status Filter">
+                  <button type="button" class="btn" [ngClass]="{
+                'btn-primary text-white': currentStatus === 'all',
+                'btn-outline-primary': currentStatus !== 'all'
+              }" (click)="filterRooms('all')">All</button>
+
+                  <button type="button" class="btn" [ngClass]="{
+                'btn-primary text-white': currentStatus === 'vacant',
+                'btn-outline-primary': currentStatus !== 'vacant'
+              }" (click)="filterRooms('vacant')">Vacant</button>
+
+                  <button type="button" class="btn" [ngClass]="{
+                'btn-primary text-white': currentStatus === 'occupied',
+                'btn-outline-primary': currentStatus !== 'occupied'
+              }" (click)="filterRooms('occupied')">Occupied</button>
+
+                  <button type="button" class="btn" [ngClass]="{
+                'btn-primary text-white': currentStatus === 'under clearance',
+                'btn-outline-primary': currentStatus !== 'under clearance'
+              }" (click)="filterRooms('under clearance')">Under Clearance</button>
+
+                  <button type="button" class="btn" [ngClass]="{
+                'btn-primary text-white': currentStatus === 'cleaning required',
+                'btn-outline-primary': currentStatus !== 'cleaning required'
+              }" (click)="filterRooms('cleaning required')">Cleaning Required</button>
+                </div>
+              </div>
+              <!-- Include Font Awesome -->
+
+
+
+              <!-- Select Dropdown -->
+              <div class="col-md-auto" *ngIf="uniqueProperties && uniqueProperties.length">
+                <select class="form-control form-select form-select-sm" id="propertySelect"
+                  [(ngModel)]="selectedPropertyId" (change)="onPropertyChange(selectedPropertyId)">
+                  <option value="">-- All Properties --</option>
+                  <option *ngFor="let property of uniqueProperties" [value]="property.id">
+                    {{ property.name }}
+                  </option>
+                </select>
+              </div>
+
+            </div>
+
+            <div class="d-flex flex-wrap gap-2">
+            <a href="#/frontdesk/reservation" class="btn btn-sm btn-white-hover" title="Reservations">
+              <i class="fas fa-calendar-check me-1"></i> Reservations
+            </a>
+
+            <a href="#/frontdesk/contactless" class="btn btn-sm btn-white-hover" title="Check-In Request">
+              <i class="fas fa-door-open me-1"></i> Check-In Request
+            </a>
+
+            <a href="#/frontdesk/checkinform" class="btn btn-sm btn-white-hover" title="Check-In">
+              <i class="fas fa-sign-in-alt me-1"></i> Check-In
+            </a>
+
+            <a href="#/frontdesk/checkedinlist" class="btn btn-sm btn-white-hover" title="Check-In List">
+              <i class="fas fa-list-alt me-1"></i> Check-In List
+            </a>
+          </div>
+
+
+            <div class="btn-group btn-group-sm" role="group" aria-label="Page Switch">
+              <button type="button" class="btn btn-light" (click)="gotodashboard()">
+                <i class="bi bi-grid-fill"></i> Icon View
+              </button>
+              <button type="button" class="btn btn-primary">
+                <i class="bi bi-door-closed-fill"></i> Rooms View
+              </button>
+            </div>
+          </div>
+
+          <div class="col-md-6 card-body">
+            <div class="row" *ngFor="let x of rooms_list; let i = index">
+
+              <strong style="font-size: 16px;">{{ x.floor_name }}:
+                {{ x.rooms.length }}
+              </strong>
+
+              <div class="col-lg-2 col-md-4 col-sm-6 col-6 p-2" *ngFor="let y of x.rooms; let j = index">
+                <div [ngClass]="
+                  y.room_status === 'vacant' ? 'card shadow-sm rounded-4 bg-vacant fixed-height' :
+                  y.room_status === 'occupied' ? 'card shadow-sm rounded-4 bg-occupied fixed-height' :
+                  y.room_status === 'under clearance' ? 'card shadow-sm rounded-4 bg-clearance fixed-height' :
+                  y.room_status === 'cleaning required' ? 'card shadow-sm rounded-4 bg-cleaning fixed-height' :
+                  'card shadow-sm rounded-4 bg-default fixed-height'
+                " (click)="onselect(y)" style="cursor:pointer">
+
+                  <div class="card-body p-2 text-center d-flex flex-column justify-content-center align-items-center">
+                    <h6 class="mb-1 fw-bold text-white" style="font-size: 1.3rem;">{{ y.room_name }}</h6>
+
+                    <p *ngIf="y.room_status === 'occupied'" class="mt-1 mb-0 small text-white">
+                      {{ y.guest_name }}
+                    </p>
+                  </div>
+
+                  <div class="card-footer p-1 text-center small fw-bold border-0 text-white"
+                    *ngIf="y.room_status != 'occupied'">
+                    {{ y.room_status | titlecase }}
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="col-md-6 card-body">
+            <!-- RIGHT SIDE: Guest Registration Form -->
+            <!-- <app-guestregistration></app-guestregistration> -->
+            <app-calendarreg></app-calendarreg>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Room Info Modal -->
+      <div class="modal fade" id="roomInfoModal" tabindex="-1" aria-labelledby="viewDetailsLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content" style="max-height: 90vh; display: flex; flex-direction: column;">
+            <div class="modal-header bg-success text-white">
+              <h5 class="modal-title" id="viewDetailsLabel" style="color: white;">{{ selected_room?.room_status |
+                titlecase }} Room Information</h5>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body overflow-auto" style="flex: 1 1 auto;">
+
+              <div class="mt-3" *ngIf="selected_room?.room_status === 'vacant'">
+                <!-- Lightweight Room Info Table -->
+                <div class="table-responsive mb-2" *ngIf="selected_room">
+                  <table class="table table-sm align-middle mb-0" style="font-size: 12px; border: 1px solid #dee2e6;">
+                    <tbody>
+                      <tr>
+                        <!-- Room Name -->
+                        <th style="width: 20%;">Room Name</th>
+                        <td style="width: 30%;">
+                          <span class="fw-bold text-primary" style="font-size: 1rem;">
+                            {{ selected_room.room_name }}
+                          </span>
+                        </td>
+
+                        <!-- Properties -->
+                        <th style="width: 20%;">Properties</th>
+                        <td style="width: 30%;">
+                          <span *ngFor="let prop of selected_room.properties"
+                            class="badge rounded-pill text-bg-primary me-1"
+                            style="background-color: #e9f5ff; color: #0d6efd; font-weight: 500; border: 1px solid #b6d4fe;">
+                            {{ prop.properties_name }}
+                          </span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- Search row -->
+                <div class="row g-2 mb-3">
+                  <div class="col-9">
+                    <input type="text" [(ngModel)]="searchText" class="form-control"
+                      placeholder="Search Check-in requestId/BookingID/ReservationID/Mobile No">
+                  </div>
+                  <div class="col-3">
+                    <button type="button" class="btn btn-primary w-100" (click)="search_guest_data()">Search</button>
+                  </div>
+                </div>
+
+                <!-- Guest Data Table & Button - Show only after data loaded -->
+                <div *ngIf="guestList.length > 0">
+                  <div class="table-responsive mb-3">
+                    <table class="table table-sm table-bordered table-striped">
+                      <thead class="table-light">
+                        <tr>
+                          <th>#</th>
+                          <th>Guest Name</th>
+                          <th>Reservation ID</th>
+                          <th>Booking ID</th>
+                          <th>Check-in</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let guest of guestList; let i = index">
+                          <td>{{ i + 1 }}</td>
+                          <td>{{ guest.guest_name }}</td>
+                          <td>{{ guest.reservationid }}</td>
+                          <td>{{ guest.booking_id }}</td>
+                          <td class="text-center"> <i class="fa fa-bed text-primary hand" (click)="goToRoomCheckIn(selected_room.room_id, guest.guest_bookin_id)"></i> </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                </div>
+                <!-- If guest list is empty and search has been triggered -->
+                <div *ngIf="guestList.length === 0 && searchText.trim().length > 0 && searchTriggered"
+                  class="text-center text-muted mt-3">
+                  No data found.
+                </div>
+
+              </div>
+
+
+              <div *ngIf="selected_room?.room_status === 'occupied'">
+                <ul class="nav nav-tabs mb-3" id="guestTab" role="tablist">
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tabGuest" type="button"
+                      role="tab">Guest</button>
+                  </li>
+                 
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabPayment" type="button"
+                      role="tab">Payments</button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link" data-bs-toggle="tab" (click)="restuarant_order_list()" data-bs-target="#tabOrders" type="button"
+                      role="tab">Restuarant Orders</button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link" data-bs-toggle="tab" (click)="services_list()" data-bs-target="#tabService"
+                      type="button" role="tab">Add Services</button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link" data-bs-toggle="tab" (click)="complaints_list()" data-bs-target="#tabComplaints"
+                      type="button" role="tab">Complaints</button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link" data-bs-toggle="tab" (click)="feedback_list()" data-bs-target="#tabFeedback"
+                      type="button" role="tab">Feedback</button>
+                  </li>
+                   <li class="nav-item" role="presentation">
+                    <button class="nav-link" data-bs-toggle="tab"  (click)="get_due_payments(selected_guest.guest_details.guests_guest_checkin_id)" data-bs-target="#tabCheckout"
+                      type="button" role="tab">Checkout</button>
+                  </li>
+                </ul>
+
+                <div class="tab-content">
+                  <div class="tab-pane fade show active" id="tabGuest" role="tabpanel">
+                    <ng-container *ngIf="selected_guest?.guest_details; else noGuestDetails">
+                     
+                      <div class="card shadow-sm p-3">
+                         <h5 class="text-success">Guest Information</h5>
+                        <div class="row mb-2">
+                          <div class="col-md-6"><strong>Name:</strong>{{selected_guest.guest_details.guests_name}} </div>
+                          <div class="col-md-6"><strong>Mobile:</strong> {{ selected_guest.guest_details.guests_mobile }}
+                          </div>
+                        </div>
+                        <div class="row mb-2">
+                          <div class="col-md-6"><strong>Source:</strong> {{ selected_guest.guest_details.booking_from ||
+                            '-' }}
+                          </div>
+                          <div class="col-md-6"><strong>Email:</strong> {{ selected_guest.checkin_info[0].guest_email}}</div>
+                        </div>
+                        <div class="row mb-2">
+
+                       
+                        </div>
+                        <div class="row mb-2">
+                          <div class="col-md-12">Room OTP:<strong> {{ selected_guest.guest_details.guests_otp
+                              }}</strong>
+                          </div>
+                        </div>
+
+                        <h5 class="text-success">Booking Information</h5>
+                         <div *ngFor="let checkin of selected_guest?.checkin_info; let i = index"
+                        >
+                        <h6 class="fw-bold mb-3">Booking {{ i + 1 }}</h6>
+                        <div class="row mb-2">
+                          <div class="col-md-6"><strong>Check-In:</strong> {{ selected_guest.checkin_info[0].check_in | date}}</div>
+                          <div class="col-md-6"><strong>Check-Out:</strong> {{ selected_guest.checkin_info[0].check_out | date }}</div>
+                        </div>
+                        <div class="row mb-2">
+                          <div class="col-md-6"><strong>Room Info:</strong> {{ selected_guest.guest_mapped_payments_info[0].description || '-' }}</div>
+                          <div class="col-md-6"><strong>No.of Nights:</strong> {{ checkin.number_of_nights || '-' }}
+                          </div>
+                        </div>
+                        <div class="row mb-2">
+                          <div class="col-md-4"><strong>Adults:</strong> {{ checkin.adults }}</div>
+                          <div class="col-md-4"><strong>Child:</strong> {{ checkin.child }}</div>
+                        </div>
+                        <!-- <div class="d-flex gap-2 mt-2 justify-content-end">
+                          <button class="btn btn-danger btn-sm text-white"><i class="fa fa-sign-out-alt me-1"></i>
+                            Check-Out</button>
+                          <button class="btn btn-warning btn-sm text-white"><i class="fa fa-ban me-1"></i> Cancel
+                            Booking</button>
+                        </div> -->
+                      </div>
+
+ <h5 class="text-success">Identifications Information</h5>
+                      <ng-container *ngIf="selected_guest?.identification_info?.length; else noID">
+                      <div class="row">
+                        <ng-container *ngFor="let doc of selected_guest.identification_info">
+                          <div class="col-md-3 mb-3">
+                            <div class="card shadow-sm h-100 text-center">
+                              <div class="card-body p-2">
+                                <p class="fw-semibold mb-2">{{ doc.doc_type === 'idproof' ? 'ID Proof' : 'Photo Proof'
+                                  }}</p>
+                                <a [href]="'https://rsmguest.com/' + doc.guest_document" target="_blank">
+                                  <img [src]="'https://rsmguest.com/' + doc.guest_document"
+                                    class="img-fluid rounded" style="height: 150px; object-fit: cover;" />
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                        </ng-container>
+                      </div>
+                    </ng-container>
+                      </div>
+                    </ng-container>
+                    <ng-template #noGuestDetails>
+                      <p class="text-muted">No guest details available.</p>
+                    </ng-template>
+                    <br>
+                    <!-- <button class="btn btn-danger btn-sm text-white" (click)="checkoutGuest(selected_room)"><i
+                        class="fa fa-sign-out-alt me-1"></i>
+                      Check-Out</button> -->
+                  </div>
+
+                  <div class="tab-pane fade" id="tabBooking" role="tabpanel">
+                    <ng-container *ngIf="selected_guest?.checkin_info?.length > 0; else noCheckin">
+                     
+                    </ng-container>
+                    <ng-template #noCheckin>
+                      <p class="text-muted">No booking records found.</p>
+                    </ng-template>
+                  </div>
+
+                  <div class="tab-pane fade" id="tabID" role="tabpanel">
+                    
+                    <ng-template #noID>
+                      <p class="text-muted">No identification documents found.</p>
+                    </ng-template>
+                  </div>
+
+                  <div class="tab-pane fade" id="tabPayment" role="tabpanel">
+                    <ng-container *ngIf="selected_guest?.payment_info?.length; else noPayments">
+                      <div *ngFor="let payment of selected_guest.payment_info" class="card shadow-sm p-3 mb-3">
+                        <div class="row">
+
+                          <div class="col-md-6"><strong>Total:</strong> ₹{{ payment.amount_paid }}</div>
+                          <div class="col-md-6"><strong>Payment Mode:</strong> {{ payment.payment_mode }}</div>
+                          <div class="col-md-6"><strong>Description:</strong> {{ payment.remarks }}</div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6"><strong>Paid:</strong> {{ payment.payment_status === 'Success' ? 'Yes' :
+                            'No' }}</div>
+                        </div>
+                      </div>
+                    </ng-container>
+                    <div class="table-responsive mt-3" *ngIf="selected_guest?.guest_mapped_payments_info?.length">
+                      <h5 class="mb-2">Mapped Service Payments</h5>
+                      <table class="table table-bordered table-sm">
+                        <thead class="table-light">
+                          <tr>
+                            <th>#</th>
+                            <th>Source</th>
+                            <th>Base Amount (₹)</th>
+                            <th>GST %</th>
+                            <th>GST Amount (₹)</th>
+                            <th>Total (₹)</th>
+                            <th>Paid</th>
+                            <th>Date</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let item of selected_guest.guest_mapped_payments_info; let i = index">
+                            <td>{{ i + 1 }}</td>
+                            <td>{{ item.description }}</td>
+                            <td>{{ item.base_amount }}</td>
+                            <td>{{ item.gst_percent }}</td>
+                            <td>{{ item.gst_amount }}</td>
+                            <td>{{ item.total_amount }}</td>
+                            <td>{{ item.is_paid == '1' ? 'Yes' : 'No' }}</td>
+                            <td>{{ item.created_at | date }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <ng-template #noPayments>
+                      <p class="text-muted">No payment data found.</p>
+                    </ng-template>
+
+
+                    <h5>Payment History</h5>
+                    <ng-container *ngIf="selected_guest?.payment_history?.length; else noHistory">
+                      <div class="table-responsive">
+                        <table class="table table-sm table-bordered align-middle">
+                          <thead class="table-light">
+                            <tr>
+                              <th>#</th>
+                              <th>Receipt No</th>
+                              <th>Date</th>
+                              <th>Mode</th>
+                              <th>Amount</th>
+                              <th>Reference</th>
+                              <th class="text-center"><i class="fa fa-receipt"></i></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let item of selected_guest.payment_history; let i = index">
+                              <td>{{ i + 1 }}</td>
+                              <td>{{ item.receipt_no }}</td>
+                              <td>{{ item.created_at | date: 'yyyy-MM-dd HH:mm' }}</td>
+                              <td>{{ item.payment_mode }}</td>
+                              <td>₹{{ item.amount_paid }}</td>
+                              <td>{{ item.payment_reference }}</td>
+                              <td class="text-center"><a class="text-danger"
+                                  href="/#/receipt?guest_id={{item.checkin_id}}&rec_id={{item.receipt_no}}"
+                                  target="_blank"><i class="fa fa-receipt hand"></i></a>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </ng-container>
+                    <ng-template #noHistory>
+                      <p class="text-muted">No payment history available.</p>
+                    </ng-template>
+                  </div>
+
+                  <div class="tab-pane fade" id="tabOrders" role="tabpanel">
+  <table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th>Order ID</th>
+      <th>Room</th>
+      <th>Date</th>
+      <th>Status</th>
+      <th>Items</th>
+      <th>Instructions</th>
+      <th>Receipt</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let order of groupedOrders">
+      <td>{{ order.order_id }}</td>
+      <td>{{ order.room_id }}</td>
+      <td>{{ order.date }}</td>
+      <td>{{ order.status }}</td>
+      <td>
+        <ul class="mb-0">
+          <li *ngFor="let item of order.items">
+            {{ item.item }}
+            <span *ngIf="item.variant">[{{ item.variant }}]</span>
+            X ({{ item.units }}) - ₹{{ item.price }}
+          </li>
+        </ul>
+      </td>
+      <td>{{ order.special_instructions }}</td>
+      <td class="text-center">
+        <a class="text-danger" href="/#/restaurantorder?&orderid={{order.order_id}}"  target="_blank"><i class="fa fa-receipt hand"></i></a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
+
+
+
+                  <div class="tab-pane fade" id="tabService" role="tabpanel">
+
+
+
+                    <div *ngFor="let item of selectedServices; let i = index" class="row border rounded p-2 mb-2">
+
+                      <div class="col-md-3">
+                        <label class="form-label fw-semibold">Select Service</label>
+                        <select class="form-select" [(ngModel)]="item.selectedService" name="service_{{i}}"
+                          (change)="onServiceChange(i)">
+                          <option value="">Select Service</option>
+                          <option *ngFor="let s of serviceList" [ngValue]="s">{{ s.service_name }}</option>
+                        </select>
+                      </div>
+
+                      <div class="col-md-2">
+                        <label class="form-label fw-semibold">Amount (₹)</label>
+                        <input type="number" class="form-control" [(ngModel)]="item.amount" (keyup)="recalculate(i)"
+                          [readonly]="item?.selectedService?.fixed_price === 1">
+                      </div>
+
+                      <div class="col-md-1">
+                        <label class="form-label fw-semibold">Tax (%)</label>
+                        {{ item.selectedService?.gst_percent || 0 | number:'1.0-0' }}%
+                      </div>
+
+
+                      <div class="col-md-2">
+                        <label class="form-label fw-semibold">Tax Amount (₹)</label>
+                        <input type="text" class="form-control" [value]="item.gst_amount || 0" readonly>
+                      </div>
+
+                      <div class="col-md-3">
+                        <label class="form-label fw-semibold">All Inclusive Amount (₹)</label>
+                        <input type="text" class="form-control" [value]="item.total_amount || 0" readonly>
+                      </div>
+
+                      <div class="col-md-1 d-flex align-items-end justify-content-end">
+                        <button class="btn btn-danger me-2" (click)="removeService(i)">
+                          <i class="bi bi-trash text-white"></i>
+                        </button>
+                      </div>
+
+                    </div>
+                    <div class="text-end">
+                      <button class="btn btn-sm btn-primary mb-3" (click)="addService()">
+                        <i class="bi bi-plus-circle me-1"></i> Add Service
+                      </button>
+                    </div>
+
+                    <div class="text-center" *ngIf="selectedServices.length > 0">
+                      <button class="btn btn-success" (click)="submitServices()">
+                        <i class="bi bi-send me-1"></i> Submit Services
+                      </button>
+                    </div>
+
+                  </div>
+
+
+                  <div class="tab-pane fade" id="tabComplaints" role="tabpanel">
+                    <ng-container *ngIf="selected_guest?.payment_history?.length; else noHistory">
+                      <div class="table-responsive">
+                        <table class="table table-sm table-bordered align-middle">
+                          <thead class="table-light">
+                            <tr>
+                              <th>#</th>
+                              <th>Subject</th>
+                              <th>Complaint</th>
+                              <th>Image</th>
+                              <th>Created On</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let item of complaintList; let i = index">
+                              <td>{{ i + 1 }}</td>
+                              <td>{{ item.gc_subject }}</td>
+                             <td>{{ item.gc_description }}</td>
+                              <td><img src="https://rsmguest.com/{{item.gc_image}}" width="50px"></td>
+                              <td>{{ item.gc_created_date | date: 'yyyy-MM-dd HH:mm' }}</td>
+                              
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </ng-container>
+                      <p class="text-muted" *ngIf="complaintList.length==0">No Complaints from Guest.</p>
+                  </div>
+
+                  <div class="tab-pane fade" id="tabFeedback" role="tabpanel">
+                   <table class="table table-sm table-bordered align-middle">
+                          <thead class="table-light">
+                            <tr>
+                              <th>#</th>
+                              <th>Subject</th>
+                              <th>Complaint</th>
+                              <th>Image</th>
+                              <th>Created On</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let item of feedbackList; let i = index">
+                              <td>{{ i + 1 }}</td>
+                              <td>{{ item.sgf_subject }}</td>
+                             <td>{{ item.sgf_description }}</td>
+                              <td><img src="https://rsmguest.com/{{item.sgf_image}}"  width="50px"></td>
+                              <td>{{ item.sgf_created_date | date: 'yyyy-MM-dd HH:mm' }}</td>
+                              
+                            </tr>
+                          </tbody>
+                        </table>
+                      <p class="text-muted" *ngIf="feedbackList.length==0">No Feedback from Guest.</p>
+                  </div>
+
+                  <div class="tab-pane fade" id="tabCheckout" role="tabpanel">
+                    <h6>Check-Out Guest</h6>
+                    <p>Room: {{ selected_room?.room_name }}</p>
+                    <p>Guest: {{ selected_guest?.guest_details?.guests_name || 'N/A' }}</p>
+
+
+             <table class="table table-bordered table-sm" *ngIf="duepaymentlist.length > 0; else noDueTemplate">
+  <thead class="table-light">
+    <tr>
+      <th>#</th>
+      <th>Date</th>
+      <th>Source</th>
+      <th class="text-end">Base Amount (₹)</th>
+      <th class="text-end">GST %</th>
+      <th class="text-end">GST Amount (₹)</th>
+      <th class="text-end">Total (₹)</th>
+      <th class="text-end">Paid</th>
+      <th class="text-end">Due</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let item of duepaymentlist; let i = index">
+      <td>{{ i + 1 }}</td>
+      <td>{{ item.created_at | date }}</td>
+      <td>{{ item.description }}</td>
+      <td class="text-end">{{ item.base_amount }}</td>
+      <td class="text-end">{{ item.gst_percent }}</td>
+      <td class="text-end">{{ item.gst_amount }}</td>
+      <td class="text-end">{{ item.total_amount }}</td>
+      <td class="text-end">{{ item.total_paid }}</td>
+      <td>
+        <input type="text" class="form-control form-control-sm text-end"
+               [value]="item.total_amount - item.total_paid" readonly>
+      </td>
+    </tr>
+  </tbody>
+
+  <tfoot class="table-light fw-bold">
+    <tr>
+      <th colspan="3" class="text-end">Total</th>
+      <th class="text-end">{{ getTotal('base') }}</th>
+      <th></th>
+      <th class="text-end">{{ getTotal('gst') }}</th>
+      <th class="text-end">{{ getTotal('total') }}</th>
+      <th class="text-end">{{ getTotal('paid') }}</th>
+      <th class="text-end">{{ getTotal('due') }}</th>
+    </tr>
+  </tfoot>
+</table>
+
+<!-- Message when no dues -->
+<ng-template #noDueTemplate>
+  <div class="alert alert-success text-center m-3">
+    There are no pending payments. Guest is ready for checkout.
+  </div>
+</ng-template>
+
+
+
+                     <div class="d-flex justify-content-center my-3">
+  <button type="button" class="btn btn-success" (click)="paydueamount(duepaymentlist)">
+    <i class="fa fa-sign-out-alt me-1"></i> Pay Now
+  </button>
+</div>
+
+                    <br><br><br>
+                   <button type="button" class="btn btn-danger"
+        (click)="checkoutGuest(selected_room)"
+        [disabled]="hasPendingDue()">
+  <i class="fa fa-sign-out-alt me-1"></i> Check-Out
+</button>
+
+
+                </div>
+              </div>
+
+              <div *ngIf="selected_room?.room_status === 'under clearance'">
+                <h6>Under Clearance Room</h6>
+                <p>Room: {{ selected_room?.room_name }}</p>
+                <p>Clearance Status: In Progress</p>
+
+                <button type="button" class="btn btn-warning" (click)="mark_as_cleared(selected_room)">Mark as Cleared</button>
+              </div>
+
+              <div *ngIf="selected_room?.room_status === 'cleaning required'">
+                <h6>Cleaning Required</h6>
+                <p>Room: {{ selected_room?.room_name }}</p>
+                <p>Task: Cleaning pending</p>
+
+                <button type="button" class="btn btn-primary">Assign Cleaning</button>
+              </div>
+            </div>
+            <!-- <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

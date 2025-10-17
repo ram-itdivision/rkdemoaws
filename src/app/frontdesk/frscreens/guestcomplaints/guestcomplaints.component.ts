@@ -1,0 +1,28 @@
+import { Component } from '@angular/core';
+import { Subject } from 'rxjs';
+import { DataTablesModule } from 'angular-datatables';
+
+@Component({
+  selector: 'app-guestcomplaints',
+  standalone: true,
+  imports: [DataTablesModule],
+  templateUrl: './guestcomplaints.component.html',
+  styleUrl: './guestcomplaints.component.css'
+})
+export class GuestcomplaintsComponent {
+
+  reservation_datatable: any = {};
+  dtTrigger: Subject<any> = new Subject();
+
+  ngOnInit(): void {
+    this.reservation_datatable = {
+      pagingType: 'full_numbers',
+      pageLength: 10,
+      processing: true
+    };
+  }
+
+  ngOnDestroy(): void {
+    this.dtTrigger.unsubscribe();
+  }
+}

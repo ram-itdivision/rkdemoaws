@@ -1,0 +1,95 @@
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="card mb-4">
+            <div class="card-header">
+                <div class="row">
+                        <h4 class="card-title">System Escalations</h4>
+                    <div class="col-md-4">
+                        <label for="fromdate" class="form-label" style="padding-top:10px">From Date</label>
+                        <input type="date" class="form-control" name="from_date">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="fromdate" class="form-label" style="padding-top:10px">To Date</label>
+                        <input type="date" class="form-control" name="to_date">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="fromdate" class="form-label" style="padding-top:10px">Status</label>
+                        <select class="form-control">
+                            <option [value]="'new'">New</option>
+                            <option [value]="'closed'">Closed</option>
+                        </select>
+
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover table-sm" datatable
+                                [dtOptions]="reservation_datatable">
+                                <thead class=" text-center">
+                                    <tr>
+                                        <th>Sno</th>
+                                        <th>Message ID</th>
+                                        <th>Message</th>
+                                        <th>Room Name</th>
+                                        <th>Posted By</th>
+                                        <th>Image</th>
+                                        <th>Time Stamp</th>
+                                        <th>Chat</th>
+                                        <th>Conversation Status</th>
+                                        <th>Comments</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-center">
+                                    <tr>
+                                        <td>1</td>
+                                        <td>MSG001</td>
+                                        <td>Hello guest</td>
+                                        <td>Room 101</td>
+                                        <td>Admin</td>
+                                        <td><img src="sample.jpg" width="30" /></td>
+                                        <td>2025-06-15 10:00</td>
+                                        <td>
+                                            <button class="btn btn-success btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#viewchat">View</button>
+                                        </td>
+                                        <td>Open</td>
+                                        <td>Add</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="viewchat" tabindex="-1" aria-labelledby="addmessageLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content rounded-3 shadow">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addmessageLabel">Message Center</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="underclearanceForm">
+                    <div class="mb-3">
+                        <label for="underclearanceRemarks" class="form-label">Conversation</label>
+                        <textarea class="form-control" id="underclearanceRemarks" name="remarks" rows="3"></textarea>
+                    </div>
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-primary px-4">Submit</button> &nbsp;
+                        <button type="submit" class="btn btn-warning" data-bs-dismiss="modal"
+                            aria-label="Close">close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

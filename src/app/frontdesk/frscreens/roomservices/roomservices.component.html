@@ -1,0 +1,78 @@
+<div class="content-body">
+  <div class="container-fluid mt-4">
+    <h3 class="mb-4">Room Services Master</h3>
+
+    <div class="row">
+      <!-- Form -->
+      <div class="col-md-6 mb-4">
+        <div class="card shadow-sm">
+          <div class="card-header bg-primary text-white">
+            {{ editing ? 'Edit Service' : 'Add New Service' }}
+          </div>
+          <div class="card-body">
+            <form (ngSubmit)="save()">
+              
+              <div class="form-group mb-3">
+                <label>Service Name</label>
+                <input [(ngModel)]="service.service_name" name="service_name" class="form-control" required />
+              </div>
+
+              <div class="form-group mb-3">
+                <label>Service Price</label>
+                <input [(ngModel)]="service.service_price" name="service_price" class="form-control" required />
+              </div>
+
+              <div class="form-group mb-3">
+                <label>GST %</label>
+                <input [(ngModel)]="service.gst_percent" name="gst_percent" class="form-control" required />
+              </div>
+
+              <div class="form-group mb-3">
+                <label>Fixed Price?</label>
+                <select [(ngModel)]="service.fixed_price" name="fixed_price" class="form-control">
+                  <option [value]="1">Fixed</option>
+                  <option [value]="0">Not Fixed</option>
+                </select>
+              </div>
+
+              <button type="submit" class="btn btn-success">{{ editing ? 'Update' : 'Add' }}</button>
+              <button type="button" class="btn btn-secondary ms-2" (click)="reset()">Reset</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="col-md-6 mb-4">
+        <div class="card shadow-sm">
+          <div class="card-header bg-dark text-white">Room Services List</div>
+          <div class="card-body p-0">
+            <table class="table table-bordered table-striped mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th>#</th>
+                  <th>Service</th>
+                  <th>Price</th>
+                  <th>GST %</th>
+                  <th>Fixed?</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let s of services; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ s.service_name }}</td>
+                  <td>{{ s.service_price }}</td>
+                  <td>{{ s.gst_percent }}</td>
+                  <td>{{ s.fixed_price === 1 ? 'Yes' : 'No' }}</td>
+                </tr>
+                <tr *ngIf="services.length === 0">
+                  <td colspan="6" class="text-center text-muted">No records found.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

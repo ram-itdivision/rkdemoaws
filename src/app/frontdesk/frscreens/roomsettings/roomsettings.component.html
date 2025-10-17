@@ -1,0 +1,65 @@
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-10">
+                <h4>Room Config</h4>
+            </div>
+            <div class="col-md-2 text-end">
+                <a href="#/frontdesk/reservation"><button class="btn btn-primary text-white">List</button></a>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center"
+                [ngClass]="{ 'bg-primary text-white': showGuestInfo }" (click)="toggleSection('guest')"
+                style="cursor: pointer;">
+                <h4 class="card-title mb-0" [ngClass]="{ 'text-white': showGuestInfo }">Floor Master</h4>
+                <span class="fs-4">{{ showGuestInfo ? '▲' : '▼' }}</span>
+            </div>
+
+            <div class="card-body" *ngIf="showGuestInfo">
+
+               <app-floors></app-floors>
+            </div>
+            <div class="card-header d-flex justify-content-between align-items-center"
+                [ngClass]="{ 'bg-primary text-white': showRoomInfo }" (click)="toggleSection('room')"
+                style="cursor: pointer;">
+                <h4 class="card-title mb-0" [ngClass]="{ 'text-white': showRoomInfo }">Room Category</h4>
+                <span class="fs-4">{{ showRoomInfo ? '▲' : '▼' }}</span>
+            </div>
+
+            <div class="card-body" *ngIf="showRoomInfo">
+
+                <app-roomcategory></app-roomcategory>
+            </div>
+
+
+
+            <div class="card-header d-flex justify-content-between align-items-center"
+                [ngClass]="{ 'bg-primary text-white': showPaymentInfo }" (click)="toggleSection('payment')"
+                style="cursor: pointer;">
+                <h4 class="card-title mb-0" [ngClass]="{ 'text-white': showPaymentInfo }">Features</h4>
+                <span class="fs-4">{{ showPaymentInfo ? '▲' : '▼' }}</span>
+            </div>
+
+            <div class="card-body" *ngIf="showPaymentInfo">
+                <app-roomfeatures></app-roomfeatures>
+            </div>
+
+            <div class="card-header d-flex justify-content-between align-items-center"
+                [ngClass]="{ 'bg-primary text-white': showProofInfo }" (click)="toggleSection('proof')"
+                style="cursor: pointer;">
+                <h4 class="card-title mb-0" [ngClass]="{ 'text-white': showProofInfo }">Room Master</h4>
+                <span class="fs-4">{{ showProofInfo ? '▲' : '▼' }}</span>
+            </div>
+
+            <div class="card-body" *ngIf="showProofInfo">
+
+              <app-roomconfig></app-roomconfig>
+            </div>
+
+            
+        </div>
+
+    </div>
+</div>

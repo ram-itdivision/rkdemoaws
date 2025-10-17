@@ -1,0 +1,93 @@
+<div class="content-body">
+    <div class="container-fluid">
+
+        <div class="card ">
+
+            <div class="card-header">
+                <h4 class="card-title">History</h4>
+            </div>
+            <div class="card-body">
+                <form class="row mb-3">
+                    <div class="col-md-4">
+                        <label for="fromdate" class="form-label">From Date:</label>
+                        <input type="date" class="form-control" name="fromdate" id="fromdate" value="2025-06-01"
+                            placeholder="Ex: 2017-02-20">
+                        <span class="text-danger" id="from_date"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="todate" class="form-label">To Date:</label>
+                        <input type="date" class="form-control" name="todate" id="todate" value="2025-06-18"
+                            placeholder="Ex: 2017-02-20">
+                        <span class="text-danger" id="to_date"></span>
+                        <span class="text-danger" id="date"></span>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label for="todate" class="form-label">&nbsp;</label>
+                        <button type="button" name="search" id="search" class="btn btn-primary btn-sm">
+                            Get
+                        </button>
+                    </div>
+                </form>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered table-sm table_font" datatable [dtOptions]="reservation_datatable">
+                        <thead>
+                            <tr>
+                                 <th scope="col">S.No</th>
+                                 <th scope="col">Type</th>
+                                <th scope="col">ResID</th>
+                              
+                                <th scope="col">Name</th>
+                                  <th scope="col">Check-In</th>
+                                <th scope="col">Check-Out</th>
+                                <th scope="col">No.of Rooms</th>
+                                 <th scope="col">Plan</th>
+                                <th scope="col">Payment Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Delux Room</td>
+                                <td><a href="#">RES1</a></td>
+                                 <td><a href="#">Ramki</a></td>
+                                
+                                <td>24-07-2025 10:06</td>
+                                <td>24-07-2025 10:06</td>
+                                  <td><a href="#">—</a></td>
+                                   <td><a href="#">—</a></td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                             <td>Delux Room</td>
+                                <td><a href="#">RES2</a></td>
+                                 <td><a href="#">Guest1</a></td>
+                                
+                                <td>24-07-2025 10:06</td>
+                                <td>24-07-2025 10:06</td>
+                                  <td><a href="#">—</a></td>
+                                   <td><a href="#">—</a></td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                             <td>Delux Room</td>
+                                <td><a href="#">RES3</a></td>
+                                 <td><a href="#">Guest 2</a></td>
+                                 
+                                <td>24-07-2025 10:06</td>
+                                <td>24-07-2025 10:06</td>
+                                  <td><a href="#">—</a></td>
+                                   <td><a href="#">—</a></td>
+                                <td>0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

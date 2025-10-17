@@ -1,0 +1,90 @@
+<div class="content-body">
+  <div class="container-fluid">
+    <h3 class="mb-4">State Master</h3>
+
+    <div class="row">
+      <!-- Form -->
+      <div class="col-md-6 mb-4">
+        <div class="card shadow-sm">
+          <div class="card-header bg-primary text-white">
+            {{ editing ? 'Edit State' : 'Add New State' }}
+          </div>
+          <div class="card-body">
+            <form (ngSubmit)="save()" #stateForm="ngForm">
+              <div class="form-group mb-3">
+                <label>State Name</label>
+                <input [(ngModel)]="state.state_name" name="state_name" class="form-control" required />
+              </div>
+
+              <div class="form-group mb-3">
+                <label>State Code</label>
+                <input [(ngModel)]="state.state_code" name="state_code" class="form-control" required />
+              </div>
+
+              <div class="form-group mb-3">
+                <label>Country</label>
+                <select [(ngModel)]="state.country_id" name="country_id" class="form-control" required>
+                  <option [ngValue]="0" disabled>Select Country</option>
+                  <option *ngFor="let c of countries" [ngValue]="c.country_id">
+                    {{ c.country_name }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="form-group mb-3">
+                <label>Status</label>
+                <select [(ngModel)]="state.status" name="status" class="form-control">
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                </select>
+              </div>
+
+              <button type="submit" class="btn btn-success">
+                {{ editing ? 'Update' : 'Add' }}
+              </button>
+              <button type="button" class="btn btn-secondary ms-2" (click)="reset()">
+                Reset
+              </button>
+            </form>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="col-md-6 mb-4">
+        <div class="card shadow-sm">
+          <div class="card-header bg-primary text-white">State List</div>
+          <div class="card-body p-0">
+            <table class="table table-bordered mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th>#</th>
+                  <th>State</th>
+                  <th>Code</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let s of states; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ s.state_name }}</td>
+                  <td>{{ s.state_code }}</td>
+                  <td>{{ s.status }}</td>
+                  <td>
+                    <button class="btn btn-sm btn-warning" (click)="edit(s)">Edit</button>
+                    <button class="btn btn-sm btn-danger ms-2" (click)="delete(s.state_id!)">Delete</button>
+                  </td>
+                </tr>
+                <tr *ngIf="states.length === 0">
+                  <td colspan="5" class="text-center text-muted">No states found.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

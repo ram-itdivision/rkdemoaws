@@ -1,0 +1,114 @@
+<div class="content-body py-4" style="max-height: 100vh; overflow-y: auto;">
+    <div class="container-fluid">
+
+        <div class="row g-4 mt-4" *ngFor="let x of cleaning_info; let i=index">
+            <ng-container *ngIf="x.rooms && x.rooms.length > 0">
+                <!-- Card 1 -->
+                <div class="col-md-12">
+                    <div class="fw-bold d-flex justify-content-between menu_class">
+                        <span class="text-dark m-2"> {{x.floor_name}}</span>
+                    </div>
+                </div>
+                <div class="col-md-4" *ngFor="let y of x.rooms; let j=index">
+                    <div class="card shadow-sm border-start border-4">
+                        <div class="card-body pointer-class" *ngIf="y.room_status == 'under clearance'" (click)="on_roomselect(y)" data-bs-toggle="modal" data-bs-target="#underclearanceModal">
+                            <h5 class="text-dark fw-bold mb-3">Room: {{y.room_name}}</h5>
+                            <div class="d-flex align-items-start gap-3">
+                                <img src="https://rsmguest.com/assets/images/inclearence.png" class="img-fluid"
+                                    style="width:70px;" alt="Image 1">
+                                <div >
+                                    <p class="mb-1 small">
+                                        <strong>Guest Name:</strong> {{y.guest_name}} <br>
+                                        <strong>Check-in Date:</strong> {{formate_date(y.check_in_date)}}
+                                    </p>
+                                    <p class="text-danger small mb-0">
+                                        <strong>Note:</strong> {{y.room_clearence_request}}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-body" *ngIf="y.room_status == 'cleaning required'">
+                            <h5 class="text-dark fw-bold mb-3">Room: {{y.room_name}} | Guest: {{y.guest_name}}</h5>
+                            <div class="d-flex justify-content-around text-center">
+                                <div>
+                                    <img src="https://rsmguest.com/assets/icons/daily_clean_sheet.png"
+                                        class="img-fluid mb-1" style="width:60px;" alt="Daily Clean Sheet">
+                                    <p class="small mb-0">Daily Sheet</p>
+                                </div>
+                                <div class="pointer-class" (click)="on_roomselect(x)" data-bs-toggle="modal" data-bs-target="#cleaning_task">
+                                    <img src="https://rsmguest.com/assets/images/finish.png" class="img-fluid mb-1"
+                                        style="width:60px;" alt="Finish">
+                                    <p class="small mb-0">Cleaning Task</p>
+                                </div>
+                                <div class="pointer-class" >
+                                    <img src="https://rsmguest.com/assets/icons/fill_supplies.png"
+                                        class="img-fluid mb-1" style="width:60px;" alt="Fill Supplies">
+                                    <p class="small mb-0">Fill Supplies</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="underclearanceModal" tabindex="-1" aria-labelledby="underclearanceModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content rounded-3 shadow">
+      <div class="modal-header">
+        <h5 class="modal-title" id="underclearanceModalLabel">Clearance Form <span class="text-muted">| Room Id: {{selected_room?.room_id}} </span></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <form id="underclearanceForm" >
+          <div class="mb-3">
+            <label for="underclearanceStatus" class="form-label">Clearance Status</label>
+            <select class="form-select" id="underclearanceStatus" name="underclearanceStatus" [(ngModel)]="cleaning_status" required>
+            <option value="">Select Status</option>
+              <option value="all okay">Clearance Okay</option>
+              <option value="not okay">Clearance Not Okay</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="underclearanceRemarks" class="form-label">Remarks</label>
+            <textarea class="form-control" id="underclearanceRemarks" placeholder="Enter Remarks" [(ngModel)]="cleaning_remarks" name="remarks" rows="3"></textarea>
+          </div>
+
+          <div class="text-end">
+            <button type="submit" class="btn btn-primary px-4" (click)="on_clearence()">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="cleaning_task" tabindex="-1" aria-labelledby="cleanroomwithimageModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content rounded-3 shadow">
+      <div class="modal-header">
+        <h5 class="modal-title" id="cleanroomwithimageModalLabel">Upload Cleaning File</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <form id="cleaningForm">
+
+          <div class="mb-3">
+            <label for="cleaningFile" class="form-label">Choose File</label>
+            <input type="file" class="form-control" id="cleaningFile" name="cleaningFile" />
+          </div>
+
+          <div class="text-end">
+            <button type="submit" class="btn btn-primary">Finished Cleaning</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

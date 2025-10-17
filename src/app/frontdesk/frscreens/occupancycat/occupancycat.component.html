@@ -1,0 +1,113 @@
+<div class="content-body">
+  <div class="container-fluid mt-4">
+   
+
+    <div class="row">
+      <!-- Control Buttons -->
+        <div class="col-6 mb-3"> <h3 class="mb-4">Occupancy Category Master</h3></div>
+      <div class="col-6 mb-3 text-end">
+        <button *ngIf="showForm === 1" class="btn btn-primary" (click)="addNew()">
+          Add New Occupancy
+        </button>
+        <button *ngIf="showForm === 2" class="btn btn-secondary" (click)="showForm = 1">
+          Back to List
+        </button>
+      </div>
+
+      <!-- Form -->
+      <div class="col-md-12 mb-4" *ngIf="showForm === 2">
+        <div class="card shadow-sm">
+          <div class="card-header bg-primary text-white">
+            {{ editing ? 'Edit Occupancy' : 'Add New Occupancy' }}
+          </div>
+          <div class="card-body">
+           <form [formGroup]="form" (ngSubmit)="save()">
+  <div class="row">
+    <div class="col-md-4 mb-3">
+      <label>Occupancy Category</label>
+      <input type="text" class="form-control" formControlName="occupancy_cat" />
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <label>Occupancy Code</label>
+      <input type="text" class="form-control" formControlName="occupancy_code" />
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <label>Number of Adults</label>
+      <input type="number" class="form-control" formControlName="num_adults" min="0" />
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <label>Number of Children</label>
+      <input type="number" class="form-control" formControlName="num_children" min="0" />
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <label>Child Max Age Limit</label>
+      <input type="number" class="form-control" formControlName="children_age" placeholder="e.g., 4,7,10" />
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <label>Status</label>
+      <select class="form-control" formControlName="status">
+        <option value="active">Active</option>
+        <option value="inactive">Inactive</option>
+      </select>
+    </div>
+
+    <div class="col-12 mt-2 text-center">
+      <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
+        {{ editing ? 'Update' : 'Add' }}
+      </button>
+    </div>
+  </div>
+</form>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="col-md-12 mb-4" *ngIf="showForm === 1">
+        <div class="card shadow-sm">
+          <div class="card-header bg-primary text-white">Occupancy List</div>
+          <div class="card-body">
+            <table class="table" datatable [dtOptions]="occupancytable" [dtTrigger]="dtTrigger">
+              <thead class="table-light">
+                <tr>
+                  <th>#</th>
+                  <th>Occupancy</th>
+                  <th>Adult</th>
+                   <th>Child</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let o of occupancies; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ o.occupancy_cat }}</td>
+                  <td>{{ o.num_adults }}</td>
+                  <td>{{ o.num_children }}
+                    <span *ngIf="o.children_age>0">({{o.children_age}} Yr)</span>
+
+                    </td>
+                    <td>{{ o.status }}</td>
+                  <td>
+                    <button class="btn btn-sm btn-warning text-white" (click)="edit(o)">Edit</button>
+                    <button class="btn btn-sm btn-danger text-white ms-2" (click)="delete(o)">Delete</button>
+                  </td>
+                </tr>
+                <tr *ngIf="occupancies.length === 0">
+                  <td colspan="4" class="text-center text-muted">No records found.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

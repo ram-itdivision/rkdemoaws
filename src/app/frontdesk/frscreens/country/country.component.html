@@ -1,0 +1,85 @@
+<div class="content-body">
+  <div class="container-fluid">
+    <h3 class="mb-4">Country Master</h3>
+
+    <div class="row">
+      <!-- Form -->
+      <div class="col-md-6 mb-4">
+        <div class="card shadow-sm">
+          <div class="card-header bg-primary text-white">
+            {{ editing ? 'Edit Country' : 'Add New Country' }}
+          </div>
+          <div class="card-body">
+            <form (ngSubmit)="save()">
+              <div class="form-group mb-3">
+                <label>Country Name</label>
+                <input [(ngModel)]="country.country_name" name="country_name" class="form-control" required />
+              </div>
+              <div class="form-group mb-3">
+                <label>Country Code</label>
+                <input [(ngModel)]="country.country_code" name="country_code" class="form-control" required />
+              </div>
+              <div class="form-group mb-3">
+                <label>Nationality</label>
+                <input [(ngModel)]="country.nationality" name="nationality" class="form-control" required />
+              </div>
+              <div class="form-group mb-3">
+                <label>Status</label>
+                <select [(ngModel)]="country.status" name="status" class="form-control">
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-success">
+                {{ editing ? 'Update' : 'Add' }}
+              </button>
+              <button type="button" class="btn btn-secondary ms-2" (click)="reset()">Reset</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="col-md-6 mb-4">
+        <div class="card shadow-sm">
+          <div class="card-body p-0">
+            <div class="card-header bg-primary text-white">Country List</div>
+            <div class="row">
+              <div class="col-md-12">
+
+                <table class="table table-bordered mb-0">
+                  <thead class="table-light">
+                    <tr>
+                      <th>#</th>
+                      <th>Country</th>
+                      <th>Code</th>
+                      <th>Nationality</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let c of countries_list; let i = index">
+                      <td>{{ i + 1 }}</td>
+                      <td>{{ c.country_name }}</td>
+                      <td>{{ c.country_code }}</td>
+                      <td>{{ c.nationality }}</td>
+                      <td [ngClass]="c.status == 'active' ? 'text-success' : 'text-danger'">{{ c.status }}</td>
+                      <td>
+                        <button class="btn btn-sm btn-warning text-white" (click)="edit(c)">Edit</button>
+                        <button class="btn btn-sm btn-danger text-white  ms-2" (click)="delete(c.id!)">Delete</button>
+                      </td>
+                    </tr>
+                    <tr *ngIf="countries_list.length === 0">
+                      <td colspan="6" class="text-center text-muted">No countries found.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

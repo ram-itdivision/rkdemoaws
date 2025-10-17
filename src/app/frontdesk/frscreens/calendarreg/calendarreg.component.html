@@ -1,0 +1,261 @@
+<div class="calendar-container p-4 ">
+
+  <!-- Header Controls -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <button class="btn btn-outline-primary me-2" (click)="previous()">
+        ‹ Prev
+      </button>
+      <button class="btn btn-outline-primary" (click)="next()">
+        Next ›
+      </button>
+    </div>
+
+    <h4 class="fw-semibold text-primary m-0">
+      {{ currentDate | date: viewMode === 'month' ? 'MMMM yyyy' : 'd MMMM yyyy' }}
+    </h4>
+
+    <div class="btn-group">
+      <button class="btn btn-sm" [ngClass]="viewMode === 'month' ? 'btn-warning' : 'btn-outline-secondary'"
+        (click)="viewMode = 'month'">
+        Month
+      </button>
+      <button class="btn btn-sm" [ngClass]="viewMode === 'week' ? 'btn-warning' : 'btn-outline-secondary'"
+        (click)="viewMode = 'week'">
+        Week
+      </button>
+    </div>
+  </div>
+
+  <!-- Calendar Grid -->
+  <div class="calendar-grid border bg-white border-1 rounded overflow-hidden">
+    <!-- Days Header -->
+    <div class="day-header bg-primary text-white p-2 fw-semibold text-center small"
+      *ngFor="let day of ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']">
+      {{ day }}
+    </div>
+
+    <!-- Month View -->
+    <ng-container *ngIf="viewMode === 'month'">
+      <div *ngFor="let date of getDaysInMonth()" class="calendar-day border p-2 text-center position-relative"
+        [class.bg-light]="!date">
+
+        <div *ngIf="date">
+          <span class="fw-semibold">{{ date.getDate() }}</span>
+
+          <!-- Badge for bookings -->
+          <span *ngIf="bookingData[getFormattedDate(date)]" (click)="openDayDetails(date)" data-bs-toggle="modal"
+            data-bs-target="#dayDetailsModal" class="badge bg-danger position-absolute top-0 end-0 m-1"
+            style="cursor: pointer;">
+            {{ bookingData[getFormattedDate(date)].length }}
+          </span>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- Week View -->
+    <ng-container *ngIf="viewMode === 'week'">
+      <div class="calendar-day border p-2 text-center position-relative" *ngFor="let date of getDaysInWeek()">
+        <div class="small fw-semibold">{{ date.getDate() }}</div>
+        <span *ngIf="bookingData[getFormattedDate(date)]" (click)="openDayDetails(date)" data-bs-toggle="modal"
+          data-bs-target="#dayDetailsModal" style="cursor: pointer;" class="badge bg-danger mt-1">
+          {{ bookingData[getFormattedDate(date)].length }}
+        </span>
+      </div>
+    </ng-container>
+  </div>
+
+  <!-- Reservation List -->
+  <div class="mt-5">
+    <h5 class="fw-bold text-secondary mb-3">Reservation List</h5>
+    <div class="card shadow-sm border-0">
+      <div class="table-responsive">
+        <table class="table table-hover table-bordered align-middle mb-0 table-striped">
+          <thead class="table-light text-center">
+            <tr>
+              <th style="width: 5%;">#</th>
+              <th style="width: 30%;">Guest</th>
+              <th style="width: 5%;">No. of Rooms</th>
+              <th style="width: 15%;">Room Type</th>
+              <th style="width: 50%;">Booking Info</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let record of booking_list; let i = index">
+              <td class="text-center">{{ i + 1 }}</td>
+
+              <td>
+                <div class="fw-semibold">{{ record.guest_name }}</div>
+                <div class="text-muted small">{{ record.guest_mobile }}</div>
+              </td>
+
+              <td class="text-center">
+                <span class="badge bg-primary fs-6 hand" data-bs-toggle="modal" data-bs-target="#bkwisemodal"
+                  (click)="booking_info(record)">{{ record.totalbookings}}</span>
+              </td>
+
+              <td class="text-start">                
+                <div class="text-muted small text-nowrap" [innerHTML]="get_unique_roomtype(record.locationcategorynames)"></div>
+              </td>
+              
+              <td>
+                <div>
+                  <span class="badge bg-light text-primary border me-1">Booking ID: {{ record.booking_id }}</span>
+                  <span class="badge bg-light text-success border">Resv ID: {{ record.reservationid }}</span>
+                </div>
+                <div class="mt-2 text-muted small">
+                  Check-in: <strong>{{ record.checkin_date | date: 'mediumDate' }}</strong>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="dayDetailsModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content shadow-lg border-0 rounded-3">
+      <div class="modal-header ">
+        <h5 class="modal-title fw-semibold">
+          Bookings on {{ selectedDate | date:'dd-MMM-yyyy' }}
+        </h5>
+        <button type="button" class="btn-close btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body table-responsive">
+        <table class="table table-hover table-bordered align-middle" *ngIf="selectedDayBookings.length > 0">
+          <thead class="table-light">
+            <tr>
+              <th>#</th>
+              <th>Guest</th>
+              <th>Rooms</th>
+              <th>Room Type</th>
+              <th>Check-In</th>
+              <th>Check-Out</th>
+              <th>View</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let guest of selectedDayBookings; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>
+                <div class="fw-semibold">{{ guest.guest_name }}</div>
+                <div class="text-muted small">{{ guest.guest_mobile }}</div>
+              </td>
+              <td class="text-center">{{ guest.totalbookings }}</td>
+              <td class="text-start">                
+                <div class="small text-nowrap" [innerHTML]="get_unique_roomtype(guest.locationcategorynames)"></div>
+              </td>
+              <td>{{ guest.checkin_date | date:'mediumDate' }}</td>
+              <td>{{ guest.checkout_date | date:'mediumDate' }}</td>
+              <td class="text-center"> <i class="text-primary fa fa-search hand" data-bs-toggle="modal"
+                  data-bs-target="#bkwisemodal" (click)="booking_info(guest)"></i> </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div *ngIf="selectedDayBookings.length === 0" class="text-center text-muted py-3">
+          No bookings for this day.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="bkwisemodal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content shadow-lg border-0 rounded-3">
+      <div class="modal-header ">
+        <h5 class="modal-title fw-semibold">
+          Booking ID: <span class="badge bg-primary"> {{ selected_bklist[0]?.booking_id }}</span> &nbsp;
+          Reservation ID: <span class="badge bg-success"> {{ selected_bklist[0]?.reservationid }}</span> &nbsp;
+          Status: <span class="badge bg-info text-white"> {{ selected_bklist[0]?.booking_status }}</span>
+        </h5>
+        <button type="button" class="btn-close btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="isLoading" class="text-center py-4">
+          <div class="spinner-border text-primary mb-2" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <div><strong>Please wait, loading booking details...</strong></div>
+        </div>
+
+        <div *ngIf="!isLoading && selected_bklist.length === 0" class="text-center text-muted py-3">
+          <i class="bi bi-info-circle me-2"></i> No booking details found.
+        </div>
+
+        <div *ngIf="!isLoading && selected_bklist.length > 0">
+
+          <div *ngFor="let x of selected_bklist" class="mb-4 border rounded p-3 shadow">
+            <div class="row">
+              <!-- Guest Info -->
+              <div class="col-md-6 mb-2">
+                <h6 class="fw-bold mb-1">{{ x.guest_honor }} {{ x.guest_name }} {{ x.guest_lastname }}</h6>
+                <div class="text-muted small">
+                  <div><i class="bi bi-telephone-fill me-1"></i>{{ x.guest_mobile }}</div>
+                  <div><i class="bi bi-envelope-fill me-1"></i>{{ x.guest_email }}</div>
+                </div>
+              </div>
+
+              <!-- Booking Dates -->
+              <div class="col-md-6 mb-2">
+                <div>
+                  <span class="fw-semibold">Check-in:</span>
+                  {{ x.checkin_date | date: 'mediumDate' }}
+                </div>
+                <div>
+                  <span class="fw-semibold">Check-out:</span>
+                  {{ x.checkout_date | date: 'mediumDate' }}
+                </div>
+                <div>
+                  <span class="fw-semibold">Nights:</span> {{ x.checkout_nights }}
+                </div>
+              </div>
+
+            </div>
+
+            <hr>
+
+            <div class="row">
+              <!-- Room & Plan -->
+              <div class="col-md-6 mb-2">
+                <div><strong>Room Type:</strong> {{ x.location_category_name }}</div>
+                <div><strong>Plan:</strong> {{ x.plan_name }}</div>
+                <div><strong>Meal:</strong> {{ x.meal_name }}</div>
+                <div><strong>Price:</strong> ₹{{ x.plan_price }}</div>
+              </div>
+
+              <!-- Guest Breakdown -->
+              <div class="col-md-6 mb-2">
+                <div><strong>Occupancy:</strong> {{ x.occupancy_cat }}</div>
+                <div><strong>Adults:</strong> {{ x.adults }}</div>
+                <div><strong>Children:</strong> {{ x.num_children }}</div>
+                <div><strong>Children Age:</strong> {{ x.children_age || 'N/A' }}</div>
+              </div>
+            </div>
+
+            <hr>
+
+            <!-- GST & Total -->
+            <div class="row">
+              <div class="col-md-6">
+                <div><strong>GST %:</strong> {{ x.gst_percentage }}%</div>
+                <div><strong>GST Amount:</strong> ₹{{ x.gst_amount }}</div>
+              </div>
+              <div class="col-md-6">
+                <div class="fw-bold fs-5 text-success">Total: ₹{{ (+x.plan_price) + (+x.gst_amount) }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

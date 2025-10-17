@@ -1,0 +1,45 @@
+/* -------- Screen (what you see on webpage) -------- */
+.pos-receipt {
+  max-width: 350px;
+  margin: auto;
+  font-family: monospace, 'Courier New', sans-serif;
+  font-size: 14px;
+  border: 1px dashed #000;
+  border-radius: 4px;
+  background: #fff;
+  padding: 10px;
+}
+
+/* -------- Print Version -------- */
+@media print {
+  body * {
+    display: none !important; /* hide all */
+  }
+
+  #print-area, #print-area * {
+    display: block !important;
+    visibility: visible !important;
+  }
+
+  #print-area {
+    width: 80mm;              /* Standard POS thermal roll width */
+    margin: 0 auto;
+    font-size: 12px;          /* smaller font for thermal print */
+    border: none;             /* remove screen border */
+    padding: 0;               /* tighter layout */
+  }
+
+  #print-area h4 {
+    font-size: 16px;          /* title a bit larger */
+    margin-bottom: 5px;
+  }
+
+  #print-area .dashed {
+    border-top: 1px dashed #000;
+    margin: 3px 0;
+  }
+
+  .no-print {
+    display: none !important; /* hide print button */
+  }
+}

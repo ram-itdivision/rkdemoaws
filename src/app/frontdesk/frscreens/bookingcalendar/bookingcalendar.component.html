@@ -1,0 +1,83 @@
+<div class="content-body">
+  <div class="container-fluid py-4">
+    <div class="card border-0 rounded-3">
+
+      <!-- Card Header with controls -->
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0 fw-bold">Booking Calendar</h5>
+        <div>
+          <button class="btn btn-sm btn-outline-secondary me-2" (click)="prevMonth()">◀</button>
+          <button class="btn btn-sm btn-outline-secondary me-2" (click)="goToToday()">Today</button>
+          <button class="btn btn-sm btn-outline-secondary" (click)="nextMonth()">▶</button>
+        </div>
+      </div>
+
+      <!-- Scrollable Calendar -->
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-bordered text-center align-middle mb-0">
+            <thead class="bg-primary text-white">
+              <tr>
+                <th>Room</th>
+                <th>Type</th>
+                <th [attr.colspan]="monthDays.length">
+                  {{ monthName }}, {{ currentYear }}
+                </th>
+              </tr>
+              <tr>
+                <th colspan="2"></th>
+                <th *ngFor="let day of monthDays">{{ day }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let room of rooms">
+                <td class="fw-semibold">{{ room.id }}</td>
+                <td>{{ room.type }}</td>
+                <td [attr.colspan]="monthDays.length" class="p-0">
+                  <div class="d-grid" [style.gridTemplateColumns]="'repeat(' + monthDays.length + ', 1fr)'">
+                    
+                    <!-- Booking Bars -->
+                    <div *ngFor="let booking of getBookingBars(room.id)" style="cursor: pointer;"
+                         class="booking-bar text-white fw-semibold small rounded px-1 py-1 m-1"
+                         [style.gridColumn]="booking.gridColumn"
+                         [ngClass]="booking.payment.startsWith('Paid') ? 'bg-success' : 'bg-danger'"
+                         (click)="openBooking(booking)"
+                         data-bs-toggle="modal"
+                         data-bs-target="#bookingModal"
+                         title="{{ booking.guest }} | {{ booking.payment }}">
+                      {{ booking.guest }}
+                    </div>
+                    
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap Modal -->
+<div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow-lg rounded-3">
+      <div class="modal-header">
+        <h5 class="modal-title" id="bookingModalLabel">Booking Details</h5>
+        <button type="button" class="btn-close btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" *ngIf="selectedBooking">
+        <p><strong>Guest:</strong> {{ selectedBooking.guest }}</p>
+        <p><strong>Room:</strong> {{ selectedBooking.roomId }}</p>
+        <p><strong>Check-In:</strong> {{ selectedBooking.checkIn | date:'dd MMM yyyy, h:mm a' }}</p>
+        <p><strong>Check-Out:</strong> {{ selectedBooking.checkOut | date:'dd MMM yyyy, h:mm a' }}</p>
+        <p><strong>Payment:</strong> {{ selectedBooking.payment }}</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+        <button class="btn btn-primary btn-sm" *ngIf="selectedBooking?.payment.startsWith('Pending')">Mark as Paid</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,212 @@
+<div class="content-body">
+  <div class="container-fluid">
+    <div class="row align-items-end mb-3 gx-3">
+      <div class="col-md-2">
+        <h5 class="mb-0">Registration List</h5>
+      </div>
+
+      <form [formGroup]="reservationform" class="col-md-8 row gx-3 needs-validation" novalidate>
+        <div class="col-md-6">
+          <label class="form-label mb-1">From Date</label>
+          <input type="date" class="form-control" formControlName="from_date" (change)="on_datechange()">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label mb-1">To Date</label>
+          <input type="date" class="form-control" formControlName="to_date" (change)="on_datechange()">
+        </div>
+      </form>
+
+      <div class="col-md-2 text-end">
+        <a href="#/frontdesk/addreservation" class="btn btn-success btn-sm text-white mt-3">
+          +Add Registration
+        </a>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card shadow-sm border-0 rounded-3">
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover align-middle" datatable [dtOptions]="reservation_datatable"
+                [dtTrigger]="dtTrigger">
+                <thead class="text-center">
+                  <tr>
+                    <th>#</th>
+                    <th>RES ID</th>
+                    <th>Booking ID</th>
+                    <th>Guest Info</th>
+                    <th>Rooms</th>
+                    <th>Room Type</th>
+                    <th>Check-in</th>
+                    <th>Check-out</th>
+                    <th>Adults</th>
+                    <th>Children</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let record of booking_list; let i = index">
+                    <td class="text-center">{{ i + 1 }}</td>
+                    <td class="text-nowrap">{{ record.reservationid }}</td>
+                    <td class="text-nowrap">{{ record.booking_id }}</td>
+
+                    <!-- Guest Info -->
+                    <td>
+                      <div class="fw-semibold">{{ record.guest_name }} {{ record.guest_lastname }}</div>
+                      <div class="text-muted small">{{ record.guest_mobile }}<br>{{ record.guest_email }}</div>
+                    </td>
+                    <td class="text-center"> {{record.totalbookings}} </td>
+                    <td class="text-start">
+                      <div class="small text-nowrap" [innerHTML]="get_unique_roomtype(record.locationcategorynames)">
+                      </div>
+                    </td>
+
+                    <!-- Dates -->
+                    <td class="text-nowrap">{{ formatToDDMMYYYY(record.checkin_date) }}</td>
+                    <td class="text-nowrap">{{ formatToDDMMYYYY(record.checkout_date) }}</td>
+
+                    <!-- Guests -->
+                    <td class="text-center">{{ record.adults }}</td>
+                    <td class="text-center">{{ record.num_children || 0 }}</td>
+
+
+                    <!-- Actions -->
+                    <td class="text-center">
+                      <i class="fa fa-eye text-primary me-2" style="cursor: pointer; font-size:18px"
+                        data-bs-toggle="modal" data-bs-target="#viewDetailsModal" (click)="view_details(record)">
+                      </i> &nbsp;
+
+                      <a href="/#/frontdesk/addreservation?bk_id={{ record.booking_id }}">
+                        <i class="fa fa-bed text-primary pointer-class" style="font-size: 20px;"></i>
+                      </a>
+                      <!-- <a [routerLink]="['/frontdesk/addreservation']"
+                     [queryParams]="{ guest_id: record.booking_id }"
+                     title="Go to Reservation">
+                    <i class="fa fa-bed text-secondary" style="font-size:18px;"></i>
+                  </a> -->
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</div>
+
+<div class="modal fade" id="viewDetailsModal" tabindex="-1" aria-labelledby="viewDetailsLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content" style="max-height: 90vh; display: flex; flex-direction: column;">
+
+      <div class="modal-header">
+        <h5 class="modal-title fw-semibold">
+          Booking ID: <span class="badge bg-primary"> {{ selected_bklist[0]?.booking_id }}</span> &nbsp;
+          Reservation ID: <span class="badge bg-success"> {{ selected_bklist[0]?.reservationid }}</span> &nbsp;
+          <!-- Status: <span class="badge bg-info text-white"> {{ selected_bklist[0]?.booking_status }}</span> -->
+        </h5>
+        <button type="button" class="btn-close btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body overflow-auto" style="flex: 1 1 auto;">
+
+        <!-- LOADING INDICATOR -->
+        <div *ngIf="isLoading" class="text-center my-4">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <p class="mt-2 text-muted">Fetching booking details...</p>
+        </div>
+
+        <!-- SHOW IF DATA AVAILABLE -->
+        <ng-container *ngIf="!isLoading && selected_bklist.length > 0">
+          <div *ngFor="let x of selected_bklist" class="mb-4 border rounded-3 p-3 shadow">
+
+            <!-- Guest Name + Booking Info -->
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <div>
+                <h5 class="mb-1 fw-bold">{{ x.guest_honor }} {{ x.guest_name }} {{ x.guest_lastname }}</h5>
+                <div class="small text-muted">
+                  <i class="bi bi-phone me-1"></i> {{ x.guest_mobile }} |
+                  <i class="bi bi-envelope ms-2 me-1"></i> {{ x.guest_email }}
+                </div>
+              </div>
+              <!-- <div class="text-end">
+                <div>
+                  Booking ID: <span class="badge bg-primary"> {{ x.booking_id }}</span>
+                </div>
+                <div class="mt-1">
+                  Reservation ID: <span class="badge bg-success">{{ x.reservationid }}</span>
+                </div>
+              </div> -->
+            </div>
+
+            <hr>
+
+            <!-- Stay Info -->
+            <div class="row">
+              <div class="col-md-4">
+                <div><strong>Check-in:</strong> {{ x.checkin_date | date: 'dd-MMM-yyyy' }}</div>
+                <div><strong>Check-out:</strong> {{ x.checkout_date | date: 'dd-MMM-yyyy' }}</div>
+                <div><strong>Nights:</strong> {{ x.checkout_nights }}</div>
+              </div>
+              <div class="col-md-4">
+                <div><strong>Adults:</strong> {{ x.adults }}</div>
+                <div><strong>Children:</strong> {{ x.num_children || '0' }}</div>
+                <div><strong>Children Age:</strong> {{ x.children_age || 'N/A' }}</div>
+              </div>
+              <div class="col-md-4">
+                <div><strong>From:</strong> {{ x.booking_from }}</div>
+                <div><strong>Booking Status:</strong>
+                  <b class="text-uppercase small"
+                    [ngClass]="x.booking_status == 'confirmed' ? 'text-success' : 'text-danger'"> {{ x.booking_status
+                    }}</b>
+                </div>
+              </div>
+            </div>
+
+            <hr>
+
+            <!-- Room & Plan Info -->
+            <div class="row">
+              <div class="col-md-6">
+                <div><strong>Room Type:</strong> {{ x.location_category_name }}</div>
+                <div><strong>Occupancy:</strong> {{ x.occupancy_cat }}</div>
+              </div>
+              <div class="col-md-6">
+                <div><strong>Plan:</strong> {{ x.plan_name }}</div>
+                <div><strong>Meal:</strong> {{ x.meal_name }}</div>
+              </div>
+            </div>
+
+            <hr>
+
+            <!-- Price Info -->
+            <div class="row">
+              <div class="col-md-6">
+                <div><strong>Price:</strong> ₹{{ x.plan_price }}</div>
+                <div><strong>GST ({{ x.gst_percentage }}%):</strong> ₹{{ x.gst_amount }}</div>
+              </div>
+              <div class="col-md-6 text-end">
+                <div class="fw-bold fs-5 text-success">Total: ₹{{ (+x.plan_price) + (+x.gst_amount) }}</div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+        <!-- IF NO DATA -->
+        <div *ngIf="!isLoading && selected_bklist.length === 0" class="text-center text-muted py-4">
+          No booking information available.
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,84 @@
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h4 class="card-title">BroadCast Messages</h4>
+                <button title="Add Message Center" class="btn btn-sm btn-warning" data-bs-toggle="modal"
+                    data-bs-target="#add_broadcastmsg" style="border-radius: 9px;">
+                    <i class="bi bi-plus"></i> Add
+                </button>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-sm" datatable
+                        [dtOptions]="reservation_datatable">
+                        <thead class=" text-center">
+                            <tr>
+                                <th>Sno</th>
+                                <th>Title</th>
+                                <th>Description</th>
+                                <th>Image</th>
+                                <th>Message To</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-center">
+                            <tr>
+                                <td>1</td>
+                                <td>Delux Bed</td>
+                                <td>Hello guest</td>
+                                <td><img src="sample.jpg" width="30" /></td>
+                                <td>Admin</td>
+                                <td>Open</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="add_broadcastmsg" tabindex="-1" aria-labelledby="addmessageLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content rounded-3 shadow">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addmessageLabel">Add Message</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="underclearanceForm">
+
+                    <div class="mb-3">
+                        <label for="underclearanceRemarks" class="form-label">Title</label>
+                        <textarea class="form-control" id="underclearanceRemarks" name="remarks" rows="3"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="underclearanceRemarks" class="form-label">Description</label>
+                        <textarea class="form-control" id="underclearanceRemarks" name="remarks" rows="3"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="underclearanceStatus" class="form-label">Stay Type</label>
+                        <select class="form-select" required>
+                            <option value="Pre Stay" selected>Pre Stay</option>
+                            <option value="In Stay">In Stay</option>
+                            <option value="Post Stay">Post Stay</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="cleaningFile" class="form-label">Upload Image</label>
+                        <input type="file" class="form-control" id="cleaningFile" name="cleaningFile" />
+                    </div>
+
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-primary px-4">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

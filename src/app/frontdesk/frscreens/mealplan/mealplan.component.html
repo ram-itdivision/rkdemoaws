@@ -1,0 +1,101 @@
+<div class="content-body">
+  <div class="container-fluid">
+    <div class="mb-3 text-end">
+      <button *ngIf="!showForm" class="btn btn-primary" (click)="showAddForm()">Add Meal</button>
+      <button *ngIf="showForm" class="btn btn-secondary" (click)="showListView()">Back to List</button>
+    </div>
+
+    <div *ngIf="showForm" class="card">
+      <div class="card-header"><h4 class="card-title">{{ editingId ? 'Edit' : 'Add' }} Meal</h4></div>
+      <div class="card-body row">
+        <div class="col-md-4 mb-3">
+          <label>Meal Name</label>
+          <input class="form-control" [(ngModel)]="meal.meal_name">
+        </div>
+
+        <div class="col-md-4 mb-3">
+          <label>Meal Description</label>
+        <input class="form-control" [(ngModel)]="meal.meal_code">
+        </div>
+        <div class="col-md-4 mb-3">
+          <label>Occupancy Category</label>
+          <select class="form-control" [(ngModel)]="meal.occupancy_category_id">
+            <option value="">Select Occupancy</option>
+            <option *ngFor="let category of occupancyCategories" [value]="category.id">
+              {{ category.occupancy_cat }}
+            </option>
+          </select>
+        </div>
+        <div class="col-md-4 mb-3">
+          <label>Price (₹)</label>
+          <input type="number" class="form-control" [(ngModel)]="meal.price">
+        </div>
+
+        <div class="col-md-4 mb-3">
+          <label>GST (%)</label>
+          <input type="number" class="form-control" (keyup)="updategstamount()" [(ngModel)]="meal.gst_percentage">
+        </div>
+        <div class="col-md-4 mb-3">
+          <label>GST Amount</label>
+          <input type="number" class="form-control" [(ngModel)]="meal.gst_amount">
+        </div>
+      <div class="col-md-4 mb-3">
+          <label>Start Date</label>
+          <input type="date" class="form-control" [(ngModel)]="meal.start_date">
+        </div>
+        <div class="col-md-4 mb-3">
+          <label>End Date</label>
+          <input type="date" class="form-control" [(ngModel)]="meal.end_date">
+        </div>
+        <div class="col-md-4 mb-3">
+          <label>Status</label>
+          <select class="form-control" [(ngModel)]="meal.status">
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </div>
+
+        <div class="col-md-12 text-center">
+          <button class="btn btn-success" (click)="saveMeal()">
+            {{ editingId ? 'Update' : 'Add' }} Meal
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!showForm" class="card mb-4">
+      <div class="card-header"><h4 class="card-title">Meals List</h4></div>
+      <div class="card-body">
+        <table class="table table-bordered text-center">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Meal Name</th>
+              <th>Description</th>
+              <th>Occupancy</th>
+              <th>Price</th>
+              <th>GST (%)</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let m of meals; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ m.meal_name }}</td>
+              <td>{{ m.meal_code }}</td>
+              <td>{{ m.occupancy_cat }}</td>
+              <td>{{ m.price }}</td>
+              <td>{{ m.gst_percentage }}</td>
+              <td>{{ m.status }}</td>
+              <td>
+                <button class="btn btn-warning btn-sm" (click)="editMeal(m)">Edit</button>
+                <button class="btn btn-danger btn-sm" (click)="deleteMeal(m.id)">Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

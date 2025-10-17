@@ -1,0 +1,127 @@
+<div class="content-body">
+  <div class="container-fluid">
+
+    <div class="mb-3 text-end">
+      <button *ngIf="!showForm" class="btn btn-primary" (click)="showAddForm()">Add Room Planner</button>
+      <button *ngIf="showForm" class="btn btn-secondary" (click)="showListView()">Back to List</button>
+    </div>
+
+    <!-- FORM -->
+    <div *ngIf="showForm" class="card">
+      <div class="card-header"><h4>{{ editingId ? 'Edit' : 'Add' }} Room Planner</h4></div>
+      <div class="card-body row">
+<form (ngSubmit)="savePlanner()" *ngIf="planner">
+  <div class="row">
+    <div class="col-md-4 mb-3">
+      <label>Plan Name</label>
+      <input class="form-control" [(ngModel)]="planner.plan_name" name="plan_name" required />
+    </div>
+<div class="col-md-4 mb-3">
+      <label>Plan Code</label>
+      <input class="form-control" [(ngModel)]="planner.plan_code" name="plan_code" required />
+    </div>
+    <div class="col-md-4 mb-3">
+      <label>Room Tariff</label>
+      <select class="form-control" [(ngModel)]="planner.room_tariff_id" (change)="getTariffPrice()" name="room_tariff_id" required>
+        <option value="">Select Tariff</option>
+        <option *ngFor="let type of roomTypes" [value]="type.id">
+          {{ type.tariff_code }}
+        </option>
+      </select>
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <label>Meal Plans</label><br />
+       <select class="form-control" [(ngModel)]="planner.meal_id" (change)="getPlanPrice()" name="meal_id" required>
+        <option value="">Select Meal</option>
+        <option *ngFor="let m of mealPlans" [value]="m.id">
+          {{ m.meal_name }}
+        </option>
+      </select>
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <label>Total Plan Price</label>
+      <input type="number" class="form-control" [(ngModel)]="planner.plan_price" name="room_tariff_price" />
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <label>GST %</label>
+      <input type="number" class="form-control" [(ngModel)]="planner.gst_percentage" name="gst_percentage" />
+    </div>
+<div class="col-md-4 mb-3">
+      <label>GST Amount</label>
+      <input type="number" class="form-control" [(ngModel)]="planner.gst_amount" name="gst_amount" />
+    </div>
+    <div class="col-md-4 mb-3">
+      <label>Plan From Date</label>
+      <input type="date" class="form-control" [(ngModel)]="planner.plan_from_date" name="plan_from_date" />
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <label>Plan To Date</label>
+      <input type="date" class="form-control" [(ngModel)]="planner.plan_to_date" name="plan_to_date" />
+    </div>
+
+ <div class="col-md-4 mb-3">
+          <label>Status</label>
+          <select class="form-control" [(ngModel)]="planner.status">
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </div>
+    <div class="col-md-12 text-center">
+      <button class="btn btn-primary">{{ editingId ? 'Update' : 'Add' }} Planner</button>
+    </div>
+  </div>
+</form>
+
+      </div>
+    </div>
+
+    <!-- LIST TABLE -->
+    <div *ngIf="!showForm" class="card mb-4">
+      <div class="card-header">
+        <h4 class="card-title">Room Planners</h4>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-bordered text-center">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Plan Name</th>
+                <th>Code</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Price</th>
+                <th>GST %</th>
+                <th>GST Amount</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let planner of planners; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ planner.plan_name }}</td>
+                <td>{{ planner.plan_code }}</td>
+                <td>{{ planner.plan_from_date }}</td>
+                <td>{{ planner.plan_to_date }}</td>
+                <td>{{ planner.plan_price }}</td>
+                <td>{{ planner.gst_percentage }}</td>
+                <td>{{ planner.gst_amount }}</td>
+                <td>{{ planner.status }}</td>
+                <td>
+                  <button class="btn btn-warning btn-sm" (click)="editPlanner(planner)">Edit</button>
+                  <button class="btn btn-danger btn-sm" (click)="deletePlanner(planner.id)">Delete</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

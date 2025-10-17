@@ -1,0 +1,594 @@
+<div class="content-body">
+    <!-- row -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="row">
+                   <div class="d-flex justify-content-between align-items-center mb-3">
+  <!-- Left corner text -->
+  <h4 class="card-title text-red">Icon View</h4>
+
+  <!-- Right corner button group -->
+  <div class="btn-group btn-group-sm" role="group" aria-label="Page Switch">
+  <button type="button" class="btn btn-primary">
+    <i class="bi bi-grid-fill"></i> Icon View
+  </button>
+  <button type="button" class="btn btn-light" (click)="gotoroomview()">
+    <i class="bi bi-door-closed-fill"></i> Rooms View
+  </button>
+</div>
+
+</div>
+
+
+
+                    <div class="col-xl-6">
+                        
+                        <div class="row">
+                           <h5 class="mb-0">RESERVATIONS & BOOKINGS</h5>
+                            <div class="col-xl-4 col-sm-4">
+                                <a href="#/frontdesk/checkedinlist">
+                                    <div class="card booking text-center">
+                                        <div
+                                            class="card-body d-flex flex-column align-items-center justify-content-center">
+                                            <div class="booking-status">
+                                                <img src="assets/img/chekedin.png" alt="Reservation Request"
+                                                    width="50" height="50">
+                                                <p class="mb-0 mt-2">Checked-In</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-xl-4 col-sm-4">
+                                <a href="#/frontdesk/reservation">
+                                    <div class="card booking text-center">
+                                        <div
+                                            class="card-body d-flex flex-column align-items-center justify-content-center">
+                                            <div class="booking-status">
+                                                <img src="assets/img/contactless_checkin.png" alt="Reservation Request"
+                                                    width="50" height="50">
+                                                <p class="mb-0 mt-2">Reservations</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-xl-4 col-sm-4">
+                                <a href="#/frontdesk/bookingcalendar">
+                                    <div class="card booking text-center">
+                                        <div
+                                            class="card-body d-flex flex-column align-items-center justify-content-center">
+                                            <div class="booking-status">
+                                                <img src="assets/img/077-calendar.png" alt="Booking Calendar" width="60"
+                                                    height="60">
+                                                <p class="mb-0 mt-2">Booking Calendar</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                           <h5 class="mb-0">CHECK IN & OUT</h5>
+
+                            <div class="col-xl-4 col-sm-6">
+                                <a href="#/frontdesk/allrooms/all">
+                                    <div class="card booking text-center">
+                                        <div
+                                            class="card-body d-flex flex-column align-items-center justify-content-center">
+                                            <div class="booking-status">
+                                                <img src="assets/img/room_config.png" alt="All Rooms" width="60"
+                                                    height="60">
+                                                <p class="mb-0 mt-2">All Rooms</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-xl-4 col-sm-6">
+                                <a href="#/frontdesk/allrooms/vacant">
+                                    <div class="card booking text-center">
+                                        <div
+                                            class="card-body d-flex flex-column align-items-center justify-content-center">
+                                            <div class="booking-status">
+                                                <img src="assets/img/vacent_rooms.png" alt="Vacant" width="60"
+                                                    height="60">
+                                                <p class="mb-0 mt-2">Vacant</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-xl-4 col-sm-6">
+                                <a href="#/frontdesk/allrooms/occupied">
+                                    <div class="card booking text-center">
+                                        <div
+                                            class="card-body d-flex flex-column align-items-center justify-content-center">
+                                            <div class="booking-status">
+                                                <img src="assets/img/occupied_room.png" alt="Occupied" width="60"
+                                                    height="60">
+                                                <p class="mb-0 mt-2">Occupied</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                           <h5 class="mb-0">CONTACTLESS CHECK IN</h5>
+
+                            <div class="col-xl-4 col-sm-6">
+                                <a href="#/frontdesk/contactless">
+                                    <div class="card booking text-center">
+                                        <div
+                                            class="card-body d-flex flex-column align-items-center justify-content-center">
+                                            <div class="booking-status">
+                                                <img src="assets/img/contactless_checkin.png" alt="Contact less"
+                                                    width="60" height="60">
+                                                <p class="mb-0 mt-2">Contact less</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-xl-4 col-sm-6">
+                                <a href="#/frontdesk/checkinhistory">
+                                    <div class="card booking text-center">
+                                        <div
+                                            class="card-body d-flex flex-column align-items-center justify-content-center">
+                                            <div class="booking-status">
+                                                <img src="assets/img/checkin_history.png" alt="Check in History"
+                                                    width="60" height="60">
+                                                <p class="mb-0 mt-2">Check in <br> History</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+
+
+                        <div class="row">
+                           <h5 class="mb-0">GUEST MESSAGING</h5>
+
+                            <div class="col-xl-4 col-sm-6">
+                                <a href="#/frontdesk/twowaymsg">
+                                    <div class="card booking text-center">
+                                        <div
+                                            class="card-body d-flex flex-column align-items-center justify-content-center">
+                                            <div class="booking-status">
+                                                <img src="assets/img/waytwomessage.png" alt=">2 Way Messageing"
+                                                    width="60" height="60">
+                                                <p class="mb-0 mt-2">2 Way <br> Messageing</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-xl-4 col-sm-6">
+                                <a href="#/frontdesk/broadcastmsg">
+                                    <div class="card booking text-center">
+                                        <div
+                                            class="card-body d-flex flex-column align-items-center justify-content-center">
+                                            <div class="booking-status">
+                                                <img src="assets/img/broadcast_message.png" alt="Broadcast Messaging"
+                                                    width="60" height="60">
+                                                <p class="mb-0 mt-2">Broadcast <br> Messaging</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                           <h5 class="mb-0">FROM GUESTS</h5>
+
+                            <div class="col-xl-4 col-sm-6">
+                                <a href="#/frontdesk/guestcomplaints">
+                                    <div class="card booking text-center">
+                                        <div
+                                            class="card-body d-flex flex-column align-items-center justify-content-center">
+                                            <div class="booking-status">
+                                                <img src="assets/img/guestcomplaint.png" alt="Guest complaints"
+                                                    width="60" height="60">
+                                                <p class="mb-0 mt-2">Guest <br>complaints</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-xl-4 col-sm-6">
+                                <a href="#/frontdesk/guestfeedback">
+                                    <div class="card booking text-center">
+                                        <div
+                                            class="card-body d-flex flex-column align-items-center justify-content-center">
+                                            <div class="booking-status">
+                                                <img src="assets/img/guest_feedback.png" alt="Guest  Feddbacks"
+                                                    width="60" height="60">
+                                                <p class="mb-0 mt-2">Guest <br> Feddbacks</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                            <div class="col-xl-4 col-sm-6">
+                                <a href="#/frontdesk/guestratings">
+                                    <div class="card booking text-center">
+                                        <div
+                                            class="card-body d-flex flex-column align-items-center justify-content-center">
+                                            <div class="booking-status">
+                                                <img src="assets/img/guest_rating.png" alt="Guest Ratings" width="60"
+                                                    height="60">
+                                                <p class="mb-0 mt-2">Guest<br> Ratings</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                    <div class="col-xl-6">
+                        <div class="row">
+                           <h5 class="mb-0">REQUESTS</h5>
+                            <div class="col-xl-4 col-sm-6 pointer">
+                                <div class="card booking text-center position-relative">
+                                    <div class="card-body d-flex flex-column align-items-center justify-content-center"
+                                        (click)="get_request('new')">
+                                        <div class="booking-status position-relative">
+                                            <img src="assets/img/desk-bell-2.png" alt="New Requests" width="60"
+                                                height="60">
+
+                                            <!-- Perfect circular badge -->
+                                            <span *ngIf="newRequests > 0"
+                                                class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-danger text-white"
+                                                style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 12px;">
+                                                {{ newRequests }}
+                                            </span>
+
+                                            <p class="mb-0 mt-2">New Requests</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="col-xl-4 col-sm-6 pointer">
+
+                                <div class="card booking text-center position-relative"
+                                    (click)="get_request('accepted')">
+                                    <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                                        <div class="booking-status position-relative">
+                                            <img src="assets/img/housekeeper.png" alt="In progress" width="60"
+                                                height="60">
+
+                                            <!-- Badge for In Progress -->
+                                            <span *ngIf="requestsInProgress > 0"
+                                                class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-warning text-white"
+                                                style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 12px;">
+                                                {{ requestsInProgress }}
+                                            </span>
+
+                                            <p class="mb-0 mt-2">In progress</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-xl-4 col-sm-6 pointer">
+                                <div class="card booking text-center" (click)="get_request('closed')">
+                                    <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                                        <div class="booking-status">
+                                            <img src="assets/img/self-confident.png" alt="Finished" width="60"
+                                                height="60">
+                                            <p class="mb-0 mt-2">Finished</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="row">
+                           <h5 class="mb-0">DAILY CLEANING</h5>
+
+                            <div class="col-xl-4 col-sm-6">
+                                <a href="#/frontdesk/ongoingcleaning">
+                                    <div class="card booking text-center position-relative">
+                                        <div
+                                            class="card-body d-flex flex-column align-items-center justify-content-center">
+                                            <div class="booking-status position-relative">
+                                                <img src="assets/img/022-broom.png" alt="Ongoing Cleaning" width="60"
+                                                    height="60">
+
+                                                <!-- Badge for Ongoing Cleaning -->
+                                                <span *ngIf="roomsInCleaning > 0"
+                                                    class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-info text-white"
+                                                    style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 12px;">
+                                                    {{ roomsInCleaning }}
+                                                </span>
+
+                                                <p class="mb-0 mt-2">Ongoing <br> Cleaning</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                            <div class="col-xl-4 col-sm-6">
+                                <a href="#/frontdesk/finishcleaning">
+                                    <div class="card booking text-center">
+                                        <div
+                                            class="card-body d-flex flex-column align-items-center justify-content-center">
+                                            <div class="booking-status">
+                                                <img src="assets/img/household-clean.png" alt="Finish Cleaning"
+                                                    width="60" height="60">
+                                                <p class="mb-0 mt-2">Finish<br> Cleaning</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                           <h5 class="mb-0">CLEARANCE & CLEANING</h5>
+
+                            <div class="col-xl-4 col-sm-6">
+                                <a href="#/frontdesk/underclearance/1">
+                                    <div class="card booking text-center position-relative">
+                                        <div
+                                            class="card-body d-flex flex-column align-items-center justify-content-center">
+                                            <div class="booking-status position-relative">
+                                                <img src="assets/img/under_clearance.png" alt="Rooms Under Clearance"
+                                                    width="60" height="60">
+
+                                                <span *ngIf="roomsUnderClearance > 0"
+                                                    class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-warning text-dark"
+                                                    style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 12px;">
+                                                    {{ roomsUnderClearance }}
+                                                </span>
+
+                                                <p class="mb-0 mt-2">Rooms Under<br> Clearance</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                            <div class="col-xl-4 col-sm-6">
+                                <a href="#/frontdesk/underclearance/2">
+                                    <div class="card booking text-center position-relative">
+                                        <div
+                                            class="card-body d-flex flex-column align-items-center justify-content-center">
+                                            <div class="booking-status position-relative">
+                                                <img src="assets/img/in_cleaning.png" alt="Rooms in Cleaning" width="60"
+                                                    height="60">
+
+                                                <!-- Badge for Rooms in Cleaning -->
+                                                <span *ngIf="roomsInCleaning > 0"
+                                                    class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-success text-white"
+                                                    style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 12px;">
+                                                    {{ roomsInCleaning }}
+                                                </span>
+
+                                                <p class="mb-0 mt-2">Rooms in <br> Cleaning</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                           <h5 class="mb-0">Upkeep Tasks (OPS) Manage</h5>
+
+                            <div class="col-xl-4 col-sm-6">
+                                <a href="#/frontdesk/postedoperations">
+                                    <div class="card booking text-center position-relative">
+                                        <div
+                                            class="card-body d-flex flex-column align-items-center justify-content-center">
+                                            <div class="booking-status position-relative">
+                                                <img src="assets/img/posted.png" alt="Posted" width="60" height="60">
+
+                                                <span *ngIf="opsPosted > 0"
+                                                    class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-danger text-white"
+                                                    style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 12px;">
+                                                    {{ opsPosted }}
+                                                </span>
+
+                                                <p class="mb-0 mt-2">Posted</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                            <div class="col-xl-4 col-sm-6">
+                                <a href="#/frontdesk/receivedoperations">
+                                    <div class="card booking text-center position-relative">
+                                        <div
+                                            class="card-body d-flex flex-column align-items-center justify-content-center">
+                                            <div class="booking-status position-relative">
+                                                <img src="assets/img/received.png" alt="Received" width="60"
+                                                    height="60">
+
+                                                <span *ngIf="opsReceived > 0"
+                                                    class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-danger text-white"
+                                                    style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 12px;">
+                                                    {{ opsReceived }}
+                                                </span>
+
+                                                <p class="mb-0 mt-2">Received</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                            <div class="col-xl-4 col-sm-6">
+                                <a href="#/frontdesk/inprogressoperations">
+                                    <div class="card booking text-center position-relative">
+                                        <div
+                                            class="card-body d-flex flex-column align-items-center justify-content-center">
+                                            <div class="booking-status position-relative">
+                                                <img src="assets/img/inprogress.png" alt="In progress" width="60"
+                                                    height="60">
+
+                                                <span *ngIf="opsInProgress > 0"
+                                                    class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-danger text-white"
+                                                    style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 12px;">
+                                                    {{ opsInProgress }}
+                                                </span>
+
+                                                <p class="mb-0 mt-2">In progress</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                            <div class="col-xl-4 col-sm-6">
+                                <a href="#/frontdesk/finishedoperations">
+                                    <div class="card booking text-center position-relative">
+                                        <div
+                                            class="card-body d-flex flex-column align-items-center justify-content-center">
+                                            <div class="booking-status position-relative">
+                                                <img src="assets/img/finished_tasks.png" alt="Finished" width="60"
+                                                    height="60">
+
+                                                <span *ngIf="finishedTasks > 0"
+                                                    class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-success text-white"
+                                                    style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 12px;">
+                                                    {{ finishedTasks }}
+                                                </span>
+
+                                                <p class="mb-0 mt-2">Finished</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                            <div class="col-xl-4 col-sm-6">
+                                <a href="#/frontdesk/cascadeusers">
+                                    <div class="card booking text-center position-relative">
+                                        <div
+                                            class="card-body d-flex flex-column align-items-center justify-content-center">
+                                            <div class="booking-status position-relative">
+                                                <img src="assets/img/cc_tasks.png" alt="CC Tasks" width="60"
+                                                    height="60">
+
+                                                <span *ngIf="opsCcTasks > 0"
+                                                    class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-warning text-white"
+                                                    style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 12px;">
+                                                    {{ opsCcTasks }}
+                                                </span>
+
+                                                <p class="mb-0 mt-2">CC Tasks</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                            <div class="col-xl-4 col-sm-6">
+                                <a href="#/frontdesk/escalatedtasks">
+                                    <div class="card booking text-center position-relative">
+                                        <div
+                                            class="card-body d-flex flex-column align-items-center justify-content-center">
+                                            <div class="booking-status position-relative">
+                                                <img src="assets/img/escalated_tasks.png" alt="Escalated Tasks"
+                                                    width="60" height="60">
+
+                                                <span *ngIf="opsEscalations > 0"
+                                                    class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-danger text-white"
+                                                    style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 12px;">
+                                                    {{ opsEscalations }}
+                                                </span>
+
+                                                <p class="mb-0 mt-2">Escalated Tasks</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="row">
+                           <h5 class="mb-0">REQ&ORD_ESCALLATIONS</h5>
+
+                            <div class="col-xl-4 col-sm-6">
+                                <a href="#/frontdesk/requestescalations">
+                                    <div class="card booking text-center position-relative">
+                                        <div
+                                            class="card-body d-flex flex-column align-items-center justify-content-center">
+                                            <div class="booking-status position-relative">
+                                                <img src="assets/img/escalations.png" alt="System Escalations"
+                                                    width="60" height="60">
+
+                                                <span *ngIf="totalEscalations > 0"
+                                                    class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-danger text-white"
+                                                    style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 12px;">
+                                                    {{ totalEscalations }}
+                                                </span>
+
+                                                <p class="mb-0 mt-2">System <br>Escalations</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                            <div class="col-xl-4 col-sm-6">
+                                <a href="#/frontdesk/requestcomplaints">
+                                    <div class="card booking text-center position-relative">
+                                        <div
+                                            class="card-body d-flex flex-column align-items-center justify-content-center">
+                                            <div class="booking-status position-relative">
+                                                <img src="assets/img/complaint.png" alt="System Complaints" width="60"
+                                                    height="60">
+
+                                                <span *ngIf="totalComplaints > 0"
+                                                    class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-danger text-white"
+                                                    style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 12px;">
+                                                    {{ totalComplaints }}
+                                                </span>
+
+                                                <p class="mb-0 mt-2">System <br> Complaints</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

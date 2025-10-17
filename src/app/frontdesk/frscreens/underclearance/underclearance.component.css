@@ -1,0 +1,22 @@
+.menu_class{
+    color: black;
+    border-radius: 10px !important;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.vacant {
+    background-color: #2B982B;
+}
+
+.occupied {
+    background-color:#CE0606
+}
+
+.cleaning {
+    background-color: #6C2764;
+}
+
+.pointer-class{
+    cursor: pointer;
+}

@@ -1,0 +1,134 @@
+<form [formGroup]="guest_form" class="needs-validation" novalidate>
+  <div class="row g-3">
+    <div class="col-xl-3 col-xxl-6 col-md-6">
+      <label class="form-label">Source <sup class="text-danger">*</sup></label>
+      <select class="form-control" [ngClass]="getValidationClass('booking_from')" formControlName="booking_from">
+        <option value="">Choose...</option>
+        <option value="Walk In">Walk In</option>
+        <option value="BOOKING.COM">BOOKING.COM</option>
+        <option value="CLEAR TRIP">CLEAR TRIP</option>
+        <option value="TRAVEL GURU">TRAVEL GURU</option>
+      </select>
+      <div class="text-danger small mt-1" *ngIf="guest_form.get('booking_from')?.touched && guest_form.get('booking_from')?.invalid">
+        Source selection is required
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-xxl-6 col-md-6">
+      <label class="form-label">Title <sup class="text-danger">*</sup></label>
+      <select class="form-control" [ngClass]="getValidationClass('guest_honor')" formControlName="guest_honor">
+        <option value="">Choose...</option>
+        <option value="Mr.">Mr.</option>
+        <option value="Mrs.">Mrs.</option>
+        <option value="Miss">Miss</option>
+        <option value="Dr.">Dr.</option>
+      </select>
+      <div class="text-danger small mt-1" *ngIf="guest_form.get('guest_honor')?.touched && guest_form.get('guest_honor')?.invalid">
+        Guest Honor selection is required
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-xxl-6 col-md-6">
+      <label class="form-label">First Name <sup class="text-danger">*</sup></label>
+      <input type="text" class="form-control" placeholder="Enter First Name" [ngClass]="getValidationClass('guest_name')" formControlName="guest_name" />
+      <div class="text-danger small mt-1" *ngIf="guest_form.get('guest_name')?.touched && guest_form.get('guest_name')?.invalid">
+        First Name is required
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-xxl-6 col-md-6">
+      <label class="form-label">Last Name <sup class="text-danger">*</sup></label>
+      <input type="text" class="form-control" placeholder="Enter Last Name" [ngClass]="getValidationClass('guest_lastname')" formControlName="guest_lastname" />
+      <div class="text-danger small mt-1" *ngIf="guest_form.get('guest_lastname')?.touched && guest_form.get('guest_lastname')?.invalid">
+        Last Name is required
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-xxl-6 col-md-6">
+      <label class="form-label">Company Name <sup class="text-danger">*</sup></label>
+      <input type="text" class="form-control" placeholder="Enter Company Name" [ngClass]="getValidationClass('companyname')" formControlName="companyname" />
+      <div class="text-danger small mt-1" *ngIf="guest_form.get('companyname')?.touched && guest_form.get('companyname')?.invalid">
+        Company Name is required
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-xxl-6 col-md-6">
+      <label class="form-label">Mobile No <sup class="text-danger">*</sup></label>
+      <input type="text" class="form-control" placeholder="Enter Mobile No" maxlength="10" [ngClass]="getValidationClass('guest_mobile')" formControlName="guest_mobile" />
+      <div class="text-danger small mt-1" *ngIf="guest_form.get('guest_mobile')?.touched && guest_form.get('guest_mobile')?.invalid">
+        Mobile Number is required
+      </div>
+      <div class="text-danger small mt-1" *ngIf="guest_form.get('guest_mobile')?.errors?.['pattern']">
+        Enter a valid 10-digit mobile number
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-xxl-6 col-md-6">
+      <label class="form-label">Email <sup class="text-danger">*</sup></label>
+      <input type="email" class="form-control" placeholder="Enter Email" [ngClass]="getValidationClass('guest_email')" formControlName="guest_email" />
+      <div class="text-danger small mt-1" *ngIf="guest_form.get('guest_email')?.touched && guest_form.get('guest_email')?.invalid">
+        Email is required
+      </div>
+      <div class="text-danger small mt-1" *ngIf="guest_form.get('guest_email')?.errors?.['email']">
+        Enter a valid email address
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-xxl-6 col-md-6">
+      <label class="form-label">Billing Info <sup class="text-danger">*</sup></label>
+      <input type="text" class="form-control" placeholder="Enter Billing Info" [ngClass]="getValidationClass('billing_to')" formControlName="billing_to" />
+      <div class="text-danger small mt-1" *ngIf="guest_form.get('billing_to')?.touched && guest_form.get('billing_to')?.invalid">
+        Billing Info is required
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-xxl-6 col-md-6">
+      <label class="form-label">Nationality <sup class="text-danger">*</sup></label>
+      <input type="text" class="form-control" placeholder="Ex: Indian" [ngClass]="getValidationClass('nationality')" formControlName="nationality" />
+      <div class="text-danger small mt-1" *ngIf="guest_form.get('nationality')?.touched && guest_form.get('nationality')?.invalid">
+        Nationality is required
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-xxl-6 col-md-6">
+      <label class="form-label">Country <sup class="text-danger">*</sup></label>
+      <input type="text" class="form-control" placeholder="Ex: India" [ngClass]="getValidationClass('guest_country')" formControlName="guest_country" />
+      <div class="text-danger small mt-1" *ngIf="guest_form.get('guest_country')?.touched && guest_form.get('guest_country')?.invalid">
+        Country is required
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-xxl-6 col-md-6">
+      <label class="form-label">State <sup class="text-danger">*</sup></label>
+      <input type="text" class="form-control" placeholder="Ex: Andhra Pradesh" [ngClass]="getValidationClass('guest_state')" formControlName="guest_state" />
+      <div class="text-danger small mt-1" *ngIf="guest_form.get('guest_state')?.touched && guest_form.get('guest_state')?.invalid">
+        State is required
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-xxl-6 col-md-6">
+      <label class="form-label">City <sup class="text-danger">*</sup></label>
+      <input type="text" class="form-control" placeholder="Ex: Kakinada" [ngClass]="getValidationClass('guest_city')" formControlName="guest_city" />
+      <div class="text-danger small mt-1" *ngIf="guest_form.get('guest_city')?.touched && guest_form.get('guest_city')?.invalid">
+        City is required
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <label class="form-label">Address <sup class="text-danger">*</sup></label>
+      <textarea class="form-control" rows="2" placeholder="Full Address" [ngClass]="getValidationClass('address')" formControlName="address"></textarea>
+      <div class="text-danger small mt-1" *ngIf="guest_form.get('address')?.touched && guest_form.get('address')?.invalid">
+        Address is required
+      </div>
+    </div>
+
+    <div class="col-md-4">&nbsp;</div>
+
+    <div class="col-md-2 text-end">
+      <label>&nbsp;</label>
+      <div class="mt-1 text-danger">
+        <button class="btn btn-danger text-white btn-sm" value="Next >>" (click)="addGuest()">Next >></button>
+      </div>
+    </div>
+  </div>
+</form>

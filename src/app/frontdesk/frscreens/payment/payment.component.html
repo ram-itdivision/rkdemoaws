@@ -1,0 +1,100 @@
+<div class="content-body">
+    <div class="container-fluid">
+  <div class="card shadow-lg">
+    <div class="card-header">
+      <div class="d-flex justify-content-between">
+        <div><h4 class="mb-0">Choose Payment Method</h4></div>
+        <div> <a href="#/frontdesk/checkin"> <button class="btn btn-light btn-sm">Back</button></a></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <ul class="nav nav-tabs mb-4" id="paymentTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#card" type="button">Card</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#upi" type="button">UPI</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#netbanking" type="button">Net Banking</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#qr" type="button">QR Code</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#cash" type="button">Cash</button>
+        </li>
+      </ul>
+
+      <div class="tab-content">
+        <!-- Card Payment -->
+        <div class="tab-pane fade show active" id="card" role="tabpanel">
+          <form [formGroup]="cardForm" (ngSubmit)="submitCardPayment()">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label>Card Type</label>
+                <select formControlName="cardType" class="form-select">
+                  <option value="credit">Credit Card</option>
+                  <option value="debit">Debit Card</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label>Card Number</label>
+                <input formControlName="cardNumber" class="form-control" maxlength="16" />
+              </div>
+              <div class="col-md-4">
+                <label>Expiry Month</label>
+                <input formControlName="expiryMonth" class="form-control" maxlength="2" />
+              </div>
+              <div class="col-md-4">
+                <label>Expiry Year</label>
+                <input formControlName="expiryYear" class="form-control" maxlength="4" />
+              </div>
+              <div class="col-md-4">
+                <label>CVV</label>
+                <input formControlName="cvv" class="form-control" maxlength="3" />
+              </div>
+              <div class="col-12 text-end">
+                <button class="btn btn-success mt-3" type="submit">Pay Now</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- UPI Payment -->
+        <div class="tab-pane fade" id="upi" role="tabpanel">
+          <form [formGroup]="upiForm" (ngSubmit)="submitUPIPayment()">
+            <label>Enter UPI ID</label>
+            <input formControlName="upiId" class="form-control mb-3" placeholder="e.g. user@upi" />
+            <button class="btn btn-success float-end" type="submit">Pay via UPI</button>
+          </form>
+        </div>
+
+        <!-- Net Banking -->
+        <div class="tab-pane fade" id="netbanking" role="tabpanel">
+          <form [formGroup]="netBankingForm" (ngSubmit)="submitNetBanking()">
+            <label>Select Bank</label>
+            <select formControlName="bank" class="form-select mb-3">
+              <option *ngFor="let bank of banks" [value]="bank">{{ bank }}</option>
+            </select>
+            <button class="btn btn-success float-end" type="submit">Proceed to Bank</button>
+          </form>
+        </div>
+
+        <!-- QR Code -->
+        <div class="tab-pane fade text-center" id="qr" role="tabpanel">
+          <p>Scan the QR Code below to make payment:</p>
+          <img src="https://via.placeholder.com/200x200?text=QR+Code" alt="QR" class="img-thumbnail">
+          <p class="text-muted mt-2">UPI ID: paybank</p>
+        </div>
+
+        <!-- Cash -->
+        <div class="tab-pane fade" id="cash" role="tabpanel">
+          <p class="text-muted">Please collect cash manually and mark this booking as "Paid (Cash)".</p>
+          <button class="btn btn-warning" (click)="markAsCashPaid()">Mark as Paid (Cash)</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

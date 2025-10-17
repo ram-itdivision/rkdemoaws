@@ -1,0 +1,219 @@
+<div class="content-body">
+    <div class="container-fluid">
+        <form [formGroup]="request_form" novalidate>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="fromdate" class="form-label" style="padding-top:10px">From Date</label>
+                    <input type="date" class="form-control" name="from_date" formControlName="from_date"
+                        (change)="on_datechange()">
+                </div>
+                <div class="col-md-4">
+                    <label for="fromdate" class="form-label" style="padding-top:10px">To Date</label>
+                    <input type="date" class="form-control" name="to_date" formControlName="to_date"
+                        (change)="on_datechange()">
+                </div>
+                <div class="col-md-4">
+                    <label for="fromdate" class="form-label" style="padding-top:10px">Order Status</label>
+                    <select class="form-control" formControlName="status_type" (change)="on_datechange()">
+                        <option [value]="'all'">ALL</option>
+                        <option [value]="'new'">New</option>
+                        <option [value]="'accepted'">Accepted</option>
+                        <option [value]="'closed'">Closed</option>
+                    </select>
+
+                </div>
+            </div>
+        </form>
+
+        <div *ngIf="loading" class="text-center mt-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
+        <h5 *ngIf="!loading && hasError" class="text-danger text-center m-3 mt-5">
+            <b>*** No Data Found ***</b>
+        </h5>
+
+        <div class="row mt-3" *ngIf="!loading && !hasError && request_list.length > 0">
+
+            <h2 class="mb-0 mt-1" style=" color: #752760;">List <small> ({{total_info.total}}) </small> </h2>
+            <div class="col-md-6" *ngFor="let x of request_list; let i = index">
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <div style="font-size: 13px; font-weight: bold; color: #752760;">Room :
+                                        {{x.room_name}}</div>
+                                    <div style="font-size: 11px; color: #000; font-weight:bold;">
+                                        {{getFormattedTime(x.request_date)}}</div>
+                                </div>
+
+                                <div>
+                                    <div [ngClass]="x.status == 'open' ? 'btn btn-outline-success btn-sm' : 'btn btn-outline-danger btn-sm'" (click)="view_order(x)">
+                                        {{x.status == 'open' ? 'New Req' : x.status == 'accepted' ? 'Accepted' : 'Rejected'}} <br>Id : {{x.request_id}}
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div style="cursor: pointer;" *ngIf="x.status == 'open'" (click)="sts_accept(x)">
+                                        <img src="https://rsmguest.com/assets/images/045-tick.png" style="width: 40px;">
+                                        <div style="font-size: 11px;">Click To Accept</div>
+                                    </div>
+                                    <div style="cursor: pointer;" *ngIf="x.status == 'accepted'" (click)="sts_change(x)">
+                                        <img src="https://rsmguest.com/assets/images/like-3.png" style="width: 40px;">
+                                        <div style="font-size: 11px;">Click To Close</div>
+                                    </div>
+                                    <div style="cursor: pointer;" *ngIf="x.status == 'rejected'" (click)="sts_change(x)">
+                                        <img src="https://rsmguest.com/assets/images/reject.png" style="width: 40px;">
+                                        <div style="font-size: 11px;">Request Rejected</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+
+                            <div class="d-flex justify-content-between">
+                                <div style="display: flex; align-items: center; background-color: #E9E9E9; border-radius: 12px; padding: 2px 6px;" *ngIf="x.request_complaint == 'YES'">
+                                    <img src="https://rsmguest.com/assets/images/SYSTEM_COMPLAINT.png" style="width: 20px;">
+                                    <span style="font-size: 10px;">&nbsp;Sys Comp</span>
+                                </div>
+                                <div style="display: flex; align-items: center; background-color: #E9E9E9; border-radius: 12px; padding: 2px 6px;" *ngIf="x.request_escalation == 'YES'">
+                                    <img src="https://rsmguest.com/assets/images/SYSTEM_ESCALATED.png" style="width: 20px;">
+                                    <span style="font-size: 10px;">&nbsp;Sys Esc</span>
+                                </div>
+                                <div>
+                                    <img src="https://rsmguest.com/assets/images/shifts.png" style="width:20px;"> &nbsp;
+                                    <span [ngClass]="x.status == 'accepted' || x.status == 'rejected' ? 'text-success' : 'text-danger'" style="font-weight: bold;">{{ getMinutesSinceRequest(x.request_date) }} mins over</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+
+                                <hr>
+                                <div class="text-center text-dark">
+                                    <strong class="text-dark">Guest says: {{x.request}}</strong> <br>
+                                    <span *ngIf="x.status == 'accepted'">Accepted By: {{x.action_changed_by}} at {{ x.action_date }} </span> <br>
+                                    <span *ngIf="x.status == 'rejected'">Rjected By: {{x.action_changed_by}}</span>
+                                </div>
+                                <hr>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="x.status != 'rejected'">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <button
+                                        style="flex: 1; color: #000; background-color: #E3E3E3; padding: 6px; border-radius: 4px; font-size: 11px;border: 0; "
+                                        data-bs-toggle="modal" data-bs-target="#reject_modal" (click)="on_footerselect(x)">
+                                        <img src="https://rsmguest.com/assets/images/reject.png" style="width: 20px;">Reject
+                                    </button>
+                                </div>
+                                <div>
+                                    <button
+                                        style="flex: 1; color: #000; background-color: #E3E3E3; padding: 6px; border-radius: 4px; font-size: 11px;border: 0; "
+                                        data-bs-toggle="modal" data-bs-target="#transfer_modal" (click)="on_footerselect(x)">
+                                        <img src="https://rsmguest.com/assets/images/042-pencil.png" style="width: 20px;">
+                                        Transfer
+                                    </button>
+                                </div>
+                                <div>
+                                    <button
+                                        style="flex: 1; color: #000; background-color: #E3E3E3; padding: 6px; border-radius: 4px; font-size: 11px; border: 0;"
+                                       data-bs-toggle="modal" data-bs-target="#chat_modal" (click)="on_footerselect(x)" >
+                                        <img src="https://rsmguest.com/assets/images/032-chat.png"  style="width: 20px;">Chat (0)
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="reject_modal" tabindex="-1" aria-labelledby="addmessageLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content rounded-3 shadow">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addmessageLabel">Rejected Converstion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="underclearanceForm">
+                    <div class="mb-3">
+                        <label for="underclearanceRemarks" class="form-label">Reason</label>
+                        <textarea class="form-control" id="underclearanceRemarks" [(ngModel)]="rejected_reason" name="remarks" rows="3"></textarea>
+                    </div>
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-primary px-4" (click)="on_reject(selected_order)" >Submit</button> &nbsp;
+                        <button type="submit" class="btn btn-warning" data-bs-dismiss="modal" aria-label="Close">close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="transfer_modal" tabindex="-1" aria-labelledby="addmessageLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content rounded-3 shadow">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addmessageLabel">Transfer Department </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="underclearanceForm">
+                    <div class="mb-3">
+                        <label for="underclearanceRemarks" class="form-label">From: </label>
+                        <input type="text" id="name" name="name" class="form-control" [(ngModel)]="tranfer_from" readonly />
+                    </div>
+                    <div class="mb-3">
+                        <label for="underclearanceRemarks" class="form-label">To: </label>
+                        <select name="to_dept" id="to_dept" class="form-control" [(ngModel)]="tranfer_to">
+                            <option value="">Select Department</option>
+                            <option value="{{x.id}}" *ngFor="let x of department_list" > {{x.group_name}} </option>
+                        </select>
+                    </div>
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-success px-4"  (click)="on_trnasfer(selected_order)">Submit Transfer</button> &nbsp;
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="chat_modal" tabindex="-1" aria-labelledby="addmessageLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content rounded-3 shadow">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addmessageLabel"> Order Chat  </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="underclearanceForm">
+                    <div class="mb-3">
+                        <label for="underclearanceRemarks" class="form-label">Conversation</label>
+                        <textarea class="form-control" id="underclearanceRemarks" [(ngModel)]="chat_remarks" name="remarks" rows="3"></textarea>
+                    </div>
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-primary px-4">Submit</button> &nbsp;
+                        <button type="submit" class="btn btn-warning" data-bs-dismiss="modal"  aria-label="Close">close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

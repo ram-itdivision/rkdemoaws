@@ -1,0 +1,70 @@
+<div class="card shadow-sm rounded-4 p-4">
+  <h5 class="card-title fw-bold mb-4 text-center">Guest Registration Form</h5>
+
+  <form>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label class="form-label" for="guestName">Guest Name</label>
+        <input type="text" class="form-control" id="guestName" name="guest_name" placeholder="Enter guest name" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="contactNumber">Contact Number</label>
+        <input type="tel" class="form-control" id="contactNumber" name="contact_number" placeholder="Enter contact number" required>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label class="form-label" for="email">Email Address</label>
+        <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="nationality">Nationality</label>
+        <input type="text" class="form-control" id="nationality" name="nationality" placeholder="Enter nationality" required>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label" for="address">Address</label>
+      <textarea class="form-control" id="address" name="address" rows="2" placeholder="Enter address" required></textarea>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label class="form-label" for="checkinDate">Check-in Date</label>
+        <input type="date" class="form-control" id="checkinDate" name="checkin" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="checkoutDate">Check-out Date</label>
+        <input type="date" class="form-control" id="checkoutDate" name="checkout" required>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label class="form-label" for="roomType">Room Type</label>
+        <select class="form-select" id="roomType" name="room_type" required>
+          <option value="" disabled selected>Select Room Type</option>
+          <option>Single</option>
+          <option>Double</option>
+          <option>Suite</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="paymentMethod">Payment Method</label>
+        <select class="form-select" id="paymentMethod" name="payment_method" required>
+          <option value="" disabled selected>Select Payment Method</option>
+          <option>Cash</option>
+          <option>Credit Card</option>
+          <option>Online</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="d-grid">
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+
+  </form>
+</div>

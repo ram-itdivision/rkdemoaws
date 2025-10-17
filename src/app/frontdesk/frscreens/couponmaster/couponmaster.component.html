@@ -1,0 +1,139 @@
+<div class="content-body">
+    <div class="container-fluid">
+  <div class="mb-3 text-end">
+    <button *ngIf="!showForm" class="btn btn-primary" (click)="showAddForm()">Add Coupon</button>
+    <button *ngIf="showForm" class="btn btn-secondary" (click)="showForm = false">Back to List</button>
+  </div>
+
+  <div *ngIf="showForm" class="card">
+    <div class="card-header"><h4>{{ editingId ? 'Edit' : 'Add' }} Coupon</h4></div>
+    <div class="card-body row" [formGroup]="couponForm">
+
+      <div class="col-md-4 mb-3">
+        <label>Coupon Code</label>
+        <input formControlName="coupon_code" class="form-control">
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <label>Coupon Type</label>
+        <select formControlName="coupon_type" class="form-control">
+          <option value="room">Room</option>
+          <option value="restaurant">Restaurant</option>
+        </select>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <label>Subcategory</label>
+        <select formControlName="subcategory" class="form-control">
+          <option value="proportional">Proportional</option>
+          <option value="gift">Gift</option>
+          <option value="flat">Flat</option>
+        </select>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <label>Discount Value</label>
+        <input formControlName="discount_value" class="form-control" type="number">
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <label>Max Discount Amount</label>
+        <input formControlName="max_discount_amount" class="form-control" type="number">
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <label>Gift Description</label>
+        <input formControlName="gift_description" class="form-control">
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <label>Valid From</label>
+        <input formControlName="valid_from" class="form-control" type="date">
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <label>Valid To</label>
+        <input formControlName="valid_to" class="form-control" type="date">
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <label>Min Order Amount</label>
+        <input formControlName="min_order_amount" class="form-control" type="number">
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <label>Usage Limit</label>
+        <input formControlName="usage_limit" class="form-control" type="number">
+      </div>
+
+      <div class="col-md-12 mb-3">
+        <label>Applicable Roles</label><br />
+        <div *ngFor="let role of rolesList">
+          <input type="checkbox" [value]="role" (change)="onCheckboxChange($event, 'applicable_roles')" [checked]="couponForm.value.applicable_roles.includes(role)"> {{ role }}
+        </div>
+      </div>
+
+      <div class="col-md-12 mb-3">
+        <label>Applicable Room Types</label><br />
+        <div *ngFor="let room of roomTypes">
+          <input type="checkbox" [value]="room.location_category_id" (change)="onCheckboxChange($event, 'applicable_room_types')" [checked]="couponForm.value.applicable_room_types.includes(room.location_category_id)"> {{ room.location_category_name }}
+        </div>
+      </div>
+
+      <div class="col-md-12 mb-3">
+        <label>Applicable Meal Types</label><br />
+        <div *ngFor="let meal of mealTypes">
+          <input type="checkbox" [value]="meal.id" (change)="onCheckboxChange($event, 'applicable_meal_types')" [checked]="couponForm.value.applicable_meal_types.includes(meal.id)"> {{ meal.meal_name }}
+        </div>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <label>Status</label>
+        <select formControlName="status" class="form-control">
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+        </select>
+      </div>
+
+      <div class="col-12">
+        <button class="btn btn-success w-100" (click)="saveCoupon()">Save Coupon</button>
+      </div>
+
+    </div>
+  </div>
+
+  <div *ngIf="!showForm" class="card">
+    <div class="card-header"><h4>Coupons List</h4></div>
+    <div class="card-body">
+      <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered text-center">
+        <thead>
+          <tr>
+            <th>Coupon Code</th>
+            <th>Type</th>
+            <th>Discount</th>
+            <th>Valid From</th>
+            <th>Valid To</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let coupon of coupons">
+            <td>{{ coupon.coupon_code }}</td>
+            <td>{{ coupon.coupon_type }}</td>
+            <td>{{ coupon.discount_value }}</td>
+            <td>{{ coupon.valid_from }}</td>
+            <td>{{ coupon.valid_to }}</td>
+            <td>{{ coupon.status }}</td>
+            <td>
+              <button class="btn btn-warning btn-sm" (click)="editCoupon(coupon)">Edit</button>
+              <button class="btn btn-danger btn-sm" (click)="deleteCoupon(coupon.id)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+</div>

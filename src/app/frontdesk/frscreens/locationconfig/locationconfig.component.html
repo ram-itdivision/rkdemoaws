@@ -1,0 +1,64 @@
+<div class="content-body">
+  <div class="container-fluid">
+    <div class="card mb-4">
+      <div class="card-header">
+        <h4 class="mb-0">Location Configuration</h4>
+      </div>
+
+      <div class="card-body">
+        <form (ngSubmit)="saveConfig()" *ngIf="config">
+          <div class="row g-3">
+
+            <div class="col-12" *ngFor="let option of configOptions">
+              <div class="d-flex justify-content-between align-items-center border p-2 rounded">
+                <label class="form-label fw-semibold mb-0">{{ option.label }}</label>
+                <div class="form-check form-switch fs-4 mb-0">
+                  <input
+                    type="checkbox"
+                    class="form-check-input"
+                    style="transform: scale(1.5);"
+                    [(ngModel)]="config[option.key]"
+                    [name]="option.key"
+                    [checked]="config[option.key] == 1"
+                    (change)="config[option.key] = config[option.key] ? 1 : 0">
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label fw-semibold">Max Occupancy Limit</label>
+              <input
+                type="number"
+                class="form-control form-control-lg"
+                [(ngModel)]="config.max_occupancy_limit"
+                name="max_occupancy_limit">
+            </div>
+
+            <div class="col-md-6 col-12">
+              <label class="form-label fw-semibold">Check-in Time</label>
+              <input
+                type="time"
+                class="form-control form-control-lg"
+                [(ngModel)]="config.checkin_time"
+                name="checkin_time">
+            </div>
+
+            <div class="col-md-6 col-12">
+              <label class="form-label fw-semibold">Check-out Time</label>
+              <input
+                type="time"
+                class="form-control form-control-lg"
+                [(ngModel)]="config.checkout_time"
+                name="checkout_time">
+            </div>
+
+            <div class="col-12">
+              <button class="btn btn-primary btn-lg w-100">Save Configuration</button>
+            </div>
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
